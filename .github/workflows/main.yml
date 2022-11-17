@@ -1,0 +1,23 @@
+name: Main Workflow
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build_A:
+    name: Setup Python and Cache Dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+          cache: "pip"
+          cache-dependency-path: |
+            app/componentB/requirements.txt
+      - run: |
+          python -m pip install --upgrade pip
+          pip install -r app/componentA/requirements.txt
