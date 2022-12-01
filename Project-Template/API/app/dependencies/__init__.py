@@ -1,6 +1,6 @@
 from memorydb import init_database
 
-db = init_database("crudDb")
+db = init_database()
 
 
 def init():

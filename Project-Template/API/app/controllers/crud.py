@@ -1,17 +1,17 @@
 from ..dependencies import db
 
 
-async def create(collection, object):
-    db.create(collection, object)
+async def create(object):
+    return db.create(object)['id']
 
 
-async def read(collection, filter):
-    db.read(collection, filter)
+async def read(filter):
+    return db.read(filter)
 
 
-async def update(collection, filter, object):
-    db.update(collection, filter, object)
+async def update(filter, object):
+    db.update(filter, object)
 
 
-async def delete(collection, filter):
-    db.delete(collection, filter)
+async def delete(filter):
+    db.delete(filter)
