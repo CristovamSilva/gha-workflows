@@ -1,0 +1,34 @@
+name: workflow_name
+
+on:
+     event1:
+          types: [activity types]
+          filter_name: [filter_values]
+
+     event2:
+          filter_name: [filter_values]
+
+jobs:
+     job1_identifier:
+          runs-on: [runner image identifiers]
+          steps:
+               - name: job1_step1_name
+                 run: shell_command
+
+               - name: job1_step2_name
+                 run: |
+                      multine_shell_command
+                      multine_shell_command
+
+               - name: step3_name
+                 uses: action@version
+                 with:
+                      var1_key: var1_value
+                      var2_key: ${{ contextName.VARIABLE }}
+
+     job2_id:
+          needs: [jobs_list]
+          runs-on: [runner image identifiers]
+          steps:
+               - name: job_2_step1_name
+                 run: shell_command

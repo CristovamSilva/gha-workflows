@@ -1,0 +1,126 @@
+Reusable Workflows
+
+# Workflow1.yml
+
+name: Reusable Wf
+on: 
+     workflow_call:
+          inputs: 
+               key_name:
+                    description: any description
+                    required: true
+                    default: default_value
+                    type: string | boolean | number
+          secrets:
+               secret_name:
+                    required: false
+          outputs:
+               output_key:
+                    value: ${{ jobs.job1.outputs.step_outcome }}
+                    description: some descripiton
+
+jobs:
+     job1:
+          outputs:
+               step_outcome: ${{ steps.outputs.step_output }}
+          runs-on:
+          steps:
+          -name: name1
+          run: echo "${{ inputs.keyname }}"
+
+          -name: set output
+           id: output
+           run: echo "::set-output name=step_output::status"
+
+# Workflow2.yml 
+
+name: reuse Wf
+on: workflow_call
+jobs:
+     job1:
+          uses: './.github/workflows/Workflow1.yml'
+          with:
+               key_name: value
+          secrets:
+               secret_name: ${{ secrets.SOME_SECRET }}
+     job2:
+          needs: job1
+          steps:
+               - name: print_output
+                 run: echo "${{ needs.job1.outputs.output_key }}"
+
+Container Services
+
+jobs:
+     job_id:
+          runs-on: ubuntu-latest
+          env:
+               MONGODB_CONNECTION_PROTOCOL: mongodb
+               MONGODB_CLUSTER_ADDRESS: 127.0.0.1:27017
+               MONGODB_USERNAME: teialabs
+               MONGODB_PASSWORD: spiderweb
+          services:
+               mongodb:
+                    image: mongo
+                    ports:
+                         - 27017:27017
+                    env:
+                         MONGO_INITDB_ROOT_USERNAME: teialabs
+                         MONGO_INITDB_ROOT_PASSWORD: spiderweb
+
+Custom Actions
+
+> .github/actions/action_name
+     action.yml
+
+name: 'custom composite action'
+
+description: 'custom action description'
+
+inputs:
+     input_name:
+          description: 'foo bar baz'
+          required: false
+          default: 'false'
+
+outputs:
+     output_name:
+     description: 'foo bar baz'
+     value: ${{ steps.xyz.output_value }}
+
+runs:
+     using: 'composite'
+     steps:
+          -    name: xyz
+               if inputs.input_name == 'value'
+               id: xyz
+               run: echo "output_value=my_value" >> $GITHUB_OUTPUT
+
+
+# > .github/actions/action_name
+     action.yml
+     app.py
+     Dockerfile
+     requirements.txt
+
+name: 'custom docker action'
+
+description: 'custom action description'
+
+inputs:
+     input_name:
+          description: 'foo bar baz'
+          required: false
+          default: 'false'
+
+outputs:
+     output_name:
+     description: 'foo bar baz'
+     value: ${{ steps.xyz.output_value }}
+
+runs:
+     using: 'docker'
+     image: 'Dockerfile'
+
+
+Env = INPUT_<INPUT_NAME>

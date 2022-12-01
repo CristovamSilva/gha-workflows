@@ -1,0 +1,5 @@
+pytest
+requests
+black
+pylint
+flake8
