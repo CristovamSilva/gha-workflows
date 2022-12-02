@@ -26,17 +26,17 @@ jobs:
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
 
-  #     - name: Run Black
-  #       run: python -m black ./Project-Template
+      - name: Sort Imports using isort
+        run: isort ./Project-Template --diff
 
-  #     - name: Run Pylint
-  #       run: echo "python -m pylint ./Project-Template"
+      - name: Format using Black
+        run: black ./Project-Template --diff --color
 
-  #     - name: Run flake8
-  #       run: echo "python -m flake8 ./Project-Template"
+      - name: Lint with flake8
+        run: flake8 ./Project-Template
 
-  #     - name: Run isort
-  #       run: echo "python -m isort ./Project-Template"
+      - name: Lint with pylint
+        run: pylint ./Project-Template
 
   Test:
     needs: [build]
@@ -49,7 +49,7 @@ jobs:
         uses: ./.github/actions/cache-dependencies
 
   Deploy:
-    needs: [build, test]
+    needs: [build, Test]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -62,8 +62,5 @@ jobs:
     needs: [CodeQuality, Test, Deploy]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Setup Cache & Dependencies
-        uses: ./.github/actions/cache-dependencies
+      - name: Report
+        run: echo "Report"
