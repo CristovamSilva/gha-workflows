@@ -21,10 +21,10 @@ runs:
         pip install ./Project-Template/API
       shell: bash
 
-      - name: Install QA Dependencies
-        run: pip install -r ./Project-Template/requirements-qa.txt
+    - name: Install QA Dependencies
+      run: pip install -r ./Project-Template/requirements-qa.txt
       shell: bash
 
-      - name: Install Test Dependencies
-        run: pip install -r ./Project-Template/requirements-test.txt
+    - name: Install Test Dependencies
+      run: pip install -r ./Project-Template/requirements-test.txt
       shell: bash
