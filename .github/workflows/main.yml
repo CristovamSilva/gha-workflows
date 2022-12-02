@@ -9,7 +9,6 @@ jobs:
   build:
     name: Setup Python and Cache Dependencies
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
