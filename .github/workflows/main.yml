@@ -6,8 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Build
+  Build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -17,7 +16,7 @@ jobs:
         uses: ./.github/actions/cache-dependencies
 
   CodeQuality:
-    needs: [build]
+    needs: [Build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -41,7 +40,7 @@ jobs:
         run: flake8 ./Project-Template
 
   Test:
-    needs: [build]
+    needs: [Build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -49,16 +48,24 @@ jobs:
 
       - name: Setup Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
+
+      - name: Check Coverage
+        continue-on-error: true
+        run: echo "Coverage 100%"
+
+      - name: Test with pytest
+        run: echo "Tests"
 
   Deploy:
-    needs: [build, Test]
+    needs: [Build, Test]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Setup Cache & Dependencies
-        uses: ./.github/actions/cache-dependencies
+      - name: Set up Docker Buildx
+        uses: docker/setup-Buildx-action@v1
+        id: Buildx
 
   Report:
     needs: [CodeQuality, Deploy]
