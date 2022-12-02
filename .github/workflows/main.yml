@@ -27,7 +27,7 @@ jobs:
         uses: ./.github/actions/cache-dependencies
 
       - name: Sort Imports using isort
-        run: isort ./Project-Template --diff
+        run: python -m isort ./Project-Template --diff
 
       - name: Format using Black
         run: black ./Project-Template --diff --color
