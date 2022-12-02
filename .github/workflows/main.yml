@@ -13,7 +13,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Setup Cache and Dependencies
+      - name: Setup Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
 
   CodeQuality:
@@ -23,7 +23,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Load Cache
+      - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
 
   #     - name: Run Black
@@ -38,20 +38,32 @@ jobs:
   #     - name: Run isort
   #       run: echo "python -m isort ./Project-Template"
 
-  # Test:
-  #   needs: [build]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - run: echo "Test"
+  Test:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-  # Deploy:
-  #   needs: [build, test]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - run: echo "Deploy"
+      - name: Setup Cache & Dependencies
+        uses: ./.github/actions/cache-dependencies
 
-  # Report:
-  #   needs: [CodeQuality, test, deploy]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - run: echo "Report"
+  Deploy:
+    needs: [build, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Cache & Dependencies
+        uses: ./.github/actions/cache-dependencies
+
+  Report:
+    needs: [CodeQuality, Test, Deploy]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Cache & Dependencies
+        uses: ./.github/actions/cache-dependencies
