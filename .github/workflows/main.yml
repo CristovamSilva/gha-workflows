@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Setup Python and Cache Dependencies
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -24,3 +24,27 @@ jobs:
           python -m pip install --upgrade pip
           pip install ./Project-Template/Databases/MemoryDB
           pip install ./Project-Template/Business
+
+  lint:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Lint"
+
+  test:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Test"
+
+  deploy:
+    needs: [build, test]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploy"
+
+  report:
+    needs: [lint, test, deploy]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Report"
