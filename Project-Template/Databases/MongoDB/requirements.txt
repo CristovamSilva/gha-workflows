@@ -1,2 +1,1 @@
-# basedb
-pymongo
+pymongo==4.3.3
