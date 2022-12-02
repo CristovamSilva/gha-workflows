@@ -32,11 +32,11 @@ jobs:
       - name: Format using Black
         run: black ./Project-Template --diff --color
 
-      # - name: Lint with pylint
-      #   run: pylint ./Project-Template
+      - name: Lint with pylint
+        run: pylint ./Project-Template
 
-      # - name: Lint with flake8
-      #   run: flake8 ./Project-Template
+      - name: Lint with flake8
+        run: flake8 ./Project-Template
 
   Test:
     needs: [build]
