@@ -26,17 +26,20 @@ jobs:
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
 
-      - name: Sort Imports using isort
-        run: python -m isort ./Project-Template --diff
+      - name: Pip freeze
+        run: pip freeze
 
-      - name: Format using Black
-        run: black ./Project-Template --diff --color
+      # - name: Sort Imports using isort
+      #   run: python -m isort ./Project-Template --diff
 
-      - name: Lint with pylint
-        run: pylint ./Project-Template
+      # - name: Format using Black
+      #   run: black ./Project-Template --diff --color
 
-      - name: Lint with flake8
-        run: flake8 ./Project-Template
+      # - name: Lint with pylint
+      #   run: pylint ./Project-Template
+
+      # - name: Lint with flake8
+      #   run: flake8 ./Project-Template
 
   Test:
     needs: [build]
