@@ -26,17 +26,11 @@ jobs:
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
 
-      - name: Install QA Dependencies
-        run: pip install -r ./Project-Template/requirements.txt
+      - name: Sort Imports using isort
+        run: python -m isort ./Project-Template --diff
 
-      - name: Pip freeze
-        run: pip freeze
-
-      # - name: Sort Imports using isort
-      #   run: python -m isort ./Project-Template --diff
-
-      # - name: Format using Black
-      #   run: black ./Project-Template --diff --color
+      - name: Format using Black
+        run: black ./Project-Template --diff --color
 
       # - name: Lint with pylint
       #   run: pylint ./Project-Template
