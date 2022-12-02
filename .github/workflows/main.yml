@@ -10,23 +10,24 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - run: echo "Build"
+      # - name: Checkout Repository
+      #   uses: actions/checkout@v3
 
-      - name: Setup Python and Cache
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-          cache: "pip"
-          cache-dependency-path: |
-            **/requirements*.txt
-            **/setup.py
-      - run: |
-          python -m pip install --upgrade pip
-          pip install -r ./Project-Template/requirements.txt
-          pip install -r ./Project-Template/API/requirements.txt
-          pip install ./Project-Template/Business
-          pip install ./Project-Template/Databases/MemoryDB
+      # - name: Setup Python and Cache
+      #   uses: actions/setup-python@v4
+      #   with:
+      #     python-version: "3.10"
+      #     cache: "pip"
+      #     cache-dependency-path: |
+      #       **/requirements*.txt
+      #       **/setup.py
+      # - run: |
+      #     python -m pip install --upgrade pip
+      #     pip install -r ./Project-Template/requirements.txt
+      #     pip install -r ./Project-Template/API/requirements.txt
+      #     pip install ./Project-Template/Business
+      #     pip install ./Project-Template/Databases/MemoryDB
 
   CodeQuality:
     needs: [build]
@@ -43,6 +44,7 @@ jobs:
           cache-dependency-path: |
             **/requirements*.txt
             **/setup.py
+      - name: Install Dependencies
       - run: |
           python -m pip install --upgrade pip
           pip install -r ./Project-Template/requirements.txt
@@ -58,6 +60,9 @@ jobs:
 
       - name: Run flake8
         run: echo "python -m flake8 ./Project-Template"
+
+      - name: Run isort
+        run: echo "python -m isort ./Project-Template"
 
   Test:
     needs: [build]
