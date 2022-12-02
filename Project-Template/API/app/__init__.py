@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from . import dependencies
-from . import routes
+
+from . import dependencies, routes
 
 
 def create_app() -> FastAPI:

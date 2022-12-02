@@ -1,5 +1,7 @@
-from fastapi import APIRouter
 from http import HTTPStatus
+
+from fastapi import APIRouter
+
 from ..controllers.process import run
 
 router = APIRouter(prefix="/process")

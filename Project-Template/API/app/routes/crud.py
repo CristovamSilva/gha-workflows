@@ -1,6 +1,8 @@
-from fastapi import APIRouter
 from http import HTTPStatus
-from ..controllers.crud import create, read, update, delete
+
+from fastapi import APIRouter
+
+from ..controllers.crud import create, delete, read, update
 
 router = APIRouter(prefix="/database")
 

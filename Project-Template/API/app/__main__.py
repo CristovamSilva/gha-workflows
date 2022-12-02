@@ -1,5 +1,6 @@
-import sys
 import pathlib
+import sys
+
 import uvicorn
 from pydantic.error_wrappers import ValidationError
 

@@ -26,8 +26,8 @@ jobs:
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
 
-      - name: Sort Imports using isort
-        run: python -m isort ./Project-Template --diff
+      # - name: Sort Imports using isort
+      #   run: python -m isort ./Project-Template --diff
 
       - name: Format using Black
         run: black ./Project-Template --diff --color
