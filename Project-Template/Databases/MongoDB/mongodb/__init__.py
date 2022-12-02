@@ -1,8 +1,9 @@
 from pymongo import MongoClient
 
-class MongoDB():
+
+class MongoDB:
     # client = MongoClient("localhost", 27017)
-    
+
     @staticmethod
     def create(cls, collection, object):
         collection.insert_one(object)
@@ -21,6 +22,7 @@ class MongoDB():
     def delete(cls, collection, filter):
         collection.delete_one(filter)
         return True
+
 
 def init_database(database):
     db = MongoDB()

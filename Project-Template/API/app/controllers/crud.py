@@ -2,7 +2,7 @@ from ..dependencies import db
 
 
 async def create(object):
-    return db.create(object)['id']
+    return db.create(object)["id"]
 
 
 async def read(filter):

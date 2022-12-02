@@ -1,6 +1,7 @@
 from uuid import uuid4
 
-class MemoryDB():
+
+class MemoryDB:
     def __init__(self) -> None:
         self.db = dict()
 
@@ -8,7 +9,7 @@ class MemoryDB():
         id = str(uuid4())
         self.db[id] = object
         print(self.db)
-        return {'id': id}
+        return {"id": id}
 
     def read(self, filter):
         return self.db[filter]
