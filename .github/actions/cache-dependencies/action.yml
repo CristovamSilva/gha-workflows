@@ -13,10 +13,18 @@ runs:
           **/requirements*.txt
           **/setup.py
 
-    - name: Install Dependencies
+    - name: Install Application Dependencies
       run: |
         python -m pip install --upgrade pip
         pip install ./Project-Template/Databases/MemoryDB
         pip install ./Project-Template/Business
         pip install ./Project-Template/API
       shell: bash
+
+      - name: Install QA Dependencies
+        run: pip install -r ./Project-Template/requirements-qa.txt
+        shell: bash
+
+      - name: Install Test Dependencies
+        run: pip install -r ./Project-Template/requirements-test.txt
+        shell: bash
