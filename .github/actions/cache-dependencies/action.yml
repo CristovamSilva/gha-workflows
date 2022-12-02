@@ -14,10 +14,8 @@ runs:
           **/setup.py
 
     - name: Install Dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
       run: |
         python -m pip install --upgrade pip
-        pip install -r ./Project-Template/requirements.txt
         pip install ./Project-Template/Databases/MemoryDB
         pip install ./Project-Template/Business
         pip install ./Project-Template/API

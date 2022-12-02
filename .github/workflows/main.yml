@@ -26,6 +26,9 @@ jobs:
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
 
+      - name: Install QA Dependencies
+        run: pip install -r ./Project-Template/requirements.txt
+
       - name: Pip freeze
         run: pip freeze
 
