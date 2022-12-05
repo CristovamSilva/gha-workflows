@@ -1,0 +1,22 @@
+name: Reusable Security
+on:
+  workflow_call:
+    inputs:
+      module-directory:
+        description: What folder to analyzie
+        required: true
+        type: string
+
+jobs:
+  Bandit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Load Cache & Dependencies
+        uses: ./.github/actions/cache-dependencies
+
+      - name: Verify with Bandit
+        continue-on-error: true
+        run: bandit -r ${{ inputs.module-directory }}

@@ -23,6 +23,12 @@ jobs:
     with:
       module-directory: ./Project-Template
 
+  Security:
+    needs: [Build]
+    uses: ./.github/workflows/reusable-security.yml
+    with:
+      module-directory: ./Project-Template
+
   Test:
     needs: [Build]
     uses: ./.github/workflows/reusable-test.yml
