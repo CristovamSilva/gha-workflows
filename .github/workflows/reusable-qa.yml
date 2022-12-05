@@ -13,11 +13,11 @@ on:
         type: boolean
     secrets:
       sonar_organization:
+        description: sonarcloud org
         required: false
-        type: string
       sonar_project_key:
+        description: sonarcloud key
         required: false
-        type: string
 
 jobs:
   CodeQuality:

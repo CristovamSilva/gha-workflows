@@ -1,0 +1,27 @@
+name: Reusable QA
+on:
+  workflow_call:
+    inputs:
+      module-directory:
+        description: What folder to analyzie
+        required: true
+        type: string
+      scan-with-sonarcloud:
+        description: Wheter Sonar Cloud should be used.
+        required: false
+        default: false
+        type: boolean
+    secrets:
+      sonar_organization:
+        required: false
+        type: string
+      sonar_project_key:
+        required: false
+        type: string
+
+jobs:
+  CodeQuality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test
+        run: echo "Testing..."
