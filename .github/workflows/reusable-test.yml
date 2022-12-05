@@ -18,16 +18,23 @@ jobs:
         uses: ./.github/actions/cache-dependencies
 
       - name: Test Module
-        run: echo "Testing..."
+        run: pytest ${{ inputs.module-directory }} --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
 
-  Coverage:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Upload pytest test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: pytest-results-${{ matrix.python-version }}
+          path: junit/test-results-${{ matrix.python-version }}.xml
+        if: ${{ always() }}
 
-      - name: Setup Cache & Dependencies
-        uses: ./.github/actions/cache-dependencies
+  # Coverage:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v3
 
-      - name: Verify Coverage
-        run: echo "Coverage 100%..."
+  #     - name: Setup Cache & Dependencies
+  #       uses: ./.github/actions/cache-dependencies
+
+  #     - name: Verify Coverage
+  #       run: echo "Coverage 100%..."

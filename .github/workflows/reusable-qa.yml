@@ -16,8 +16,13 @@ on:
         required: false
         default: true
         type: boolean
-      lint:
-        description: Whether to run pylint and flake8.
+      lint-with-flake8:
+        description: Whether to run flake8.
+        required: false
+        default: true
+        type: boolean
+      lint-with-pylint:
+        description: Whether to run pylint.
         required: false
         default: true
         type: boolean
@@ -42,7 +47,6 @@ jobs:
 
   Lint:
     runs-on: ubuntu-latest
-    if: inputs.lint
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -51,9 +55,11 @@ jobs:
         uses: ./.github/actions/cache-dependencies
 
       - name: Lint with pylint
+        if: lint-with-pylint
         continue-on-error: true
         run: pylint ${{ inputs.module-directory }}
 
       - name: Lint with flake8
+        if: lint-with-flake8
         continue-on-error: true
-        run: flake8 ${{ inputs.module-directory }}
+        run: flake8 ${{ inputs.module-directory }} --count --exit-zero --select=E9,F63,F7,F82 --show-source --statistics
