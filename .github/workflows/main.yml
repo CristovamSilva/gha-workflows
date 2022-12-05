@@ -17,7 +17,9 @@ jobs:
 
   CodeQuality:
     needs: [Build]
-    uses: ./.github/workflows/reusable.yml
+    uses: ./.github/workflows/reusable-qa.yml
+    with:
+      module-directory: ./Project-Template
 
   Test:
     needs: [Build]

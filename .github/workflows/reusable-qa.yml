@@ -1,5 +1,12 @@
 name: Reusable QA
-on: workflow_call
+on:
+  workflow_call:
+    inputs:
+      module-directory:
+        description: What folder to analyzie
+        required: true
+        type: string
+
 jobs:
   CodeQuality:
     runs-on: ubuntu-latest
@@ -11,19 +18,19 @@ jobs:
         uses: ./.github/actions/cache-dependencies
 
       - name: Sort Imports using isort
-        run: isort ./Project-Template --diff
+        run: isort ${{ inputs.module-directory }} --diff
 
       - name: Format using Black
-        run: black ./Project-Template --diff --color
+        run: black ${{ inputs.module-directory }} --diff --color
 
       - name: Lint with pylint
         continue-on-error: true
-        run: pylint ./Project-Template
+        run: pylint ${{ inputs.module-directory }}
 
       - name: Lint with flake8
         continue-on-error: true
-        run: flake8 ./Project-Template
+        run: flake8 ${{ inputs.module-directory }}
 
       - name: Verify with Bandit
         continue-on-error: true
-        run: bandit -r ./Project-Template
+        run: bandit -r ${{ inputs.module-directory }}
