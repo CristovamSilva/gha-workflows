@@ -17,27 +17,7 @@ jobs:
 
   CodeQuality:
     needs: [Build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Load Cache & Dependencies
-        uses: ./.github/actions/cache-dependencies
-
-      - name: Sort Imports using isort
-        run: isort ./Project-Template --diff
-
-      - name: Format using Black
-        run: black ./Project-Template --diff --color
-
-      - name: Lint with pylint
-        continue-on-error: true
-        run: pylint ./Project-Template
-
-      - name: Lint with flake8
-        continue-on-error: true
-        run: flake8 ./Project-Template
+    uses: ./.github/workflows/reusable.yml
 
   Test:
     needs: [Build]
