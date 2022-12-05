@@ -20,7 +20,7 @@ on:
         required: false
 
 jobs:
-  CodeQuality:
+  SortAndFormat:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -35,6 +35,15 @@ jobs:
       - name: Format using Black
         run: black ${{ inputs.module-directory }} --diff --color
 
+  Lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Load Cache & Dependencies
+        uses: ./.github/actions/cache-dependencies
+
       - name: Lint with pylint
         continue-on-error: true
         run: pylint ${{ inputs.module-directory }}
@@ -43,6 +52,14 @@ jobs:
         continue-on-error: true
         run: flake8 ${{ inputs.module-directory }}
 
+  VerifySecurity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Load Cache & Dependencies
+        uses: ./.github/actions/cache-dependencies
       - name: Verify with Bandit
         continue-on-error: true
         run: bandit -r ${{ inputs.module-directory }}
