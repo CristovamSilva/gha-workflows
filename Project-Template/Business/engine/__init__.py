@@ -2,5 +2,5 @@ from time import sleep
 
 
 def process():
-    sleep(10)
+    sleep(2)
     return True

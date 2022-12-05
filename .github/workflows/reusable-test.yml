@@ -18,14 +18,14 @@ jobs:
         uses: ./.github/actions/cache-dependencies
 
       - name: Test Module
-        run: pytest ${{ inputs.module-directory }} --doctest-modules --junitxml=junit/test-results.xml --cov=${{ inputs.module-directory }} --cov-report=xml --cov-report=html
+        run: pytest ${{ inputs.module-directory }} --cov=${{ inputs.module-directory }}
 
-      - name: Upload pytest test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: pytest-results
-          path: junit/test-results.xml
-        if: ${{ always() }}
+      # - name: Upload pytest test results
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: pytest-results
+      #     path: junit/test-results.xml
+      #   if: ${{ always() }}
 
   # Coverage:
   #   runs-on: ubuntu-latest
