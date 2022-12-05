@@ -21,15 +21,6 @@ on:
         required: false
         default: true
         type: boolean
-      scan-with-sonarcloud:
-        description: Whether to scan with Sonar Cloud.
-        required: false
-        default: false
-        type: boolean
-    secrets:
-      SONAR_TOKEN:
-        description: sonarcloud token
-        required: false
 
 jobs:
   SortAndFormat:
@@ -66,17 +57,3 @@ jobs:
       - name: Lint with flake8
         continue-on-error: true
         run: flake8 ${{ inputs.module-directory }}
-
-  SonarCloud:
-    runs-on: ubuntu-latest
-    if: inputs.scan-with-sonarcloud
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # Disabling shallow clone is recommended for improving relevancy of reporting
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
