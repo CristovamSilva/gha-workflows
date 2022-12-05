@@ -6,20 +6,20 @@ on:
         description: What folder to analyzie
         required: true
         type: string
-      disable-sort:
+      sort:
         description: Whether to run isort.
         required: false
-        default: false
+        default: true
         type: boolean
-      disable-format:
+      format:
         description: Whether to run black.
         required: false
-        default: false
+        default: true
         type: boolean
-      disable-lint:
+      lint:
         description: Whether to run pylint and flake8.
         required: false
-        default: false
+        default: true
         type: boolean
       scan-with-sonarcloud:
         description: Whether to scan with Sonar Cloud.
@@ -42,16 +42,16 @@ jobs:
         uses: ./.github/actions/cache-dependencies
 
       - name: Sort Imports using isort
-        if: !inputs.disable-sort
+        if: inputs.sort
         run: isort ${{ inputs.module-directory }} --diff
 
       - name: Format using Black
-        if: !inputs.disable-format
+        if: inputs.format
         run: black ${{ inputs.module-directory }} --diff --color
 
   Lint:
     runs-on: ubuntu-latest
-    if: !inputs.disable-lint
+    if: inputs.lint
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
