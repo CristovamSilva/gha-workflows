@@ -1,6 +1,10 @@
 name: Reusable Security
 on:
   workflow_call:
+    secrets:
+      SONAR_TOKEN:
+        description: sonarcloud token
+        required: false
     inputs:
       module-directory:
         description: What folder to analyzie
@@ -11,10 +15,6 @@ on:
         required: false
         default: false
         type: boolean
-    secrets:
-      SONAR_TOKEN:
-        description: sonarcloud token
-        required: false
 
 jobs:
   Bandit:
