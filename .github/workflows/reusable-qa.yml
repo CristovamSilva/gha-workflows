@@ -6,6 +6,18 @@ on:
         description: What folder to analyzie
         required: true
         type: string
+      scan-with-sonarcloud:
+        description: Wheter Sonar Cloud should be used.
+        required: false
+        default: false
+        type: boolean
+    secrets:
+      sonar_organization:
+        required: false
+        type: string
+      sonar_project_key:
+        required: false
+        type: string
 
 jobs:
   CodeQuality:
@@ -34,3 +46,17 @@ jobs:
       - name: Verify with Bandit
         continue-on-error: true
         run: bandit -r ${{ inputs.module-directory }}
+
+  SonarCloud:
+    runs-on: ubuntu-latest
+    if: inputs.scan-with-sonarcloud
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Disabling shallow clone is recommended for improving relevancy of reporting
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
