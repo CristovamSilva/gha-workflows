@@ -12,11 +12,8 @@ on:
         default: false
         type: boolean
     secrets:
-      sonar_organization:
-        description: sonarcloud org
-        required: false
-      sonar_project_key:
-        description: sonarcloud key
+      SONAR_TOKEN:
+        description: sonarcloud token
         required: false
 
 jobs:

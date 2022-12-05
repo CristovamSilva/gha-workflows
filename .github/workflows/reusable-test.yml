@@ -6,22 +6,28 @@ on:
         description: What folder to analyzie
         required: true
         type: string
-      scan-with-sonarcloud:
-        description: Wheter Sonar Cloud should be used.
-        required: false
-        default: false
-        type: boolean
-    secrets:
-      sonar_organization:
-        required: false
-        type: string
-      sonar_project_key:
-        required: false
-        type: string
 
 jobs:
-  CodeQuality:
+  Test:
     runs-on: ubuntu-latest
     steps:
-      - name: Test
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Cache & Dependencies
+        uses: ./.github/actions/cache-dependencies
+
+      - name: Test Module
         run: echo "Testing..."
+
+  Coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Cache & Dependencies
+        uses: ./.github/actions/cache-dependencies
+
+      - name: Verify Coverage
+        run: echo "Coverage 100%..."

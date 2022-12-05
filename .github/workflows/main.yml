@@ -25,20 +25,9 @@ jobs:
 
   Test:
     needs: [Build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Setup Cache & Dependencies
-        uses: ./.github/actions/cache-dependencies
-
-      - name: Check Coverage
-        continue-on-error: true
-        run: echo "Coverage 100%"
-
-      - name: Test with pytest
-        run: echo "Tests"
+    uses: ./.github/workflows/reusable-test.yml
+    with:
+      module-directory: ./Project-Template
 
   Deploy:
     needs: [Test, CodeQuality]
@@ -52,7 +41,7 @@ jobs:
         id: Buildx
 
   Report:
-    needs: [CodeQuality, Deploy]
+    needs: [Deploy]
     runs-on: ubuntu-latest
     steps:
       - name: Report
