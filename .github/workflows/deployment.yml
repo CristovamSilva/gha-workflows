@@ -24,4 +24,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Report
-        run: echo "Report"
+        run: echo "Reports"
