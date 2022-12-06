@@ -3,7 +3,7 @@ on:
   workflow_call:
     inputs:
       module-directory:
-        description: What folder to analyze
+        description: What folder to analyze.
         required: true
         type: string
 
