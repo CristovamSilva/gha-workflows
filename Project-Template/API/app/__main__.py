@@ -22,7 +22,7 @@ if __name__ == "__main__":
     except ValidationError as e:
         directory = pathlib.Path(".").absolute()
         print(
-            f"The .env file is invalid or could not be "
+            f"The env file is invalid or could not be "
             f"found on the current directory={directory}.\nValidation: {e}",
             file=sys.stderr,
         )
