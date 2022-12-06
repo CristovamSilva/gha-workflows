@@ -16,7 +16,9 @@ jobs:
         id: build
         uses: ./.github/actions/deploy-image
         with:
-          push: false
+          dockerfile: ./Project-Template/API/Dockerfile
+          context: ./Project-Template
+          push: true
 
       # - name: Deploy Cloud Services
       #   run: aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --force-new-deployment

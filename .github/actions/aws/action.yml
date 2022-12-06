@@ -3,12 +3,6 @@ description: "Build and Push Image to the Registry"
 runs:
   using: "composite"
   steps:
-    # - name: Set SSH agent
-    #   uses: webfactory/ssh-agent@v0.5.4
-    #   with:
-    #     ssh-private-key: |
-    #       ${{ secrets.DEPLOY_KEY }}
-
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
