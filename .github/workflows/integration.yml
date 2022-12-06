@@ -36,6 +36,7 @@ jobs:
 
   Report:
     needs: [Quality, Security, Test]
+    if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Report
