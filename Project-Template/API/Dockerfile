@@ -21,10 +21,10 @@ ENV PATH="/opt/venv/bin:$PATH"
 WORKDIR /app
 COPY . .
 RUN --mount=type=cache,target=/root/.cache/pip pip install --upgrade pip setuptools wheel && \
-    pip install --no-cache-dir ./Databases/MemoryDB && \
-    pip install --no-cache-dir ./Databases/MongoDB && \
-    pip install --no-cache-dir ./Business && \
-    pip install --no-cache-dir ./API
+    pip install ./Databases/MemoryDB && \
+    pip install ./Databases/MongoDB && \
+    pip install ./Business && \
+    pip install ./API
 
 FROM python:3.10-slim
 
