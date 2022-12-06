@@ -23,9 +23,9 @@ runs:
       shell: bash
 
     - name: Install QA Dependencies
-      run: if [ -f requirements-qa.txt ]; then pip install -r requirements-qa.txt; fi
+      run: pip install -r ./Project-Template/requirements-qa.txt
       shell: bash
 
     - name: Install Test Dependencies
-      run: if [ -f requirements-test.txt ]; then pip install -r requirements-test.txt; fi
+      run: pip install -r ./Project-Template/requirements-test.txt
       shell: bash
