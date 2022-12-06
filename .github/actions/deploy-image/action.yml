@@ -1,5 +1,17 @@
 name: "Build and Push Image"
 description: "Build and Push Image to the Registry"
+inputs:
+  push:
+    description: Whether to push image.
+    required: false
+    default: true
+    type: boolean
+
+secrets:
+  GITHUB_TOKEN:
+    description: GitHub token to push to ghcr
+    required: true
+
 runs:
   using: "composite"
   steps:
@@ -25,6 +37,6 @@ runs:
         cache-to: type=gha,mode=max
         builder: ${{ steps.buildx.outputs.name }}
         context: ./Project-Template/
-        push: true
+        push: ${{ inputs.push }}
         file: ./Project-Template/API/Dockerfile
         tags: $REGISTRY/$REPOSITORY:$IMAGE_TAG

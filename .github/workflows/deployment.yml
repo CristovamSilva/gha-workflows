@@ -16,12 +16,12 @@ jobs:
         id: build
         uses: ./.github/actions/deploy-image
 
-      - name: Deploy Cloud Services
-        run: aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --force-new-deployment
+      # - name: Deploy Cloud Services
+      #   run: aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --force-new-deployment
 
-  Report:
-    needs: [Deploy]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Report
-        run: echo "Reports"
+  # Report:
+  #   needs: [Deploy]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Report
+  #       run: echo "Reports"
