@@ -26,11 +26,11 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Set SSH agent
-      if: inputs.ssh
-      uses: webfactory/ssh-agent@v0.7.0
-      with:
-        ssh-private-key: ${{ inputs.deploy-keys }}
+    # - name: Set SSH agent
+    #   if: inputs.ssh
+    #   uses: webfactory/ssh-agent@v0.7.0
+    #   with:
+    #     ssh-private-key: ${{ inputs.deploy-keys }}
 
     - name: Set up Docker Buildx
       uses: docker/setup-Buildx-action@v2
