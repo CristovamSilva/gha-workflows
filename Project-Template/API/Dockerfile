@@ -20,13 +20,17 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 WORKDIR /app
 COPY . .
-RUN --mount=type=cache,target=/root/.cache/pip pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip pip install --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir ./Databases/MemoryDB && \
+    pip install --no-cache-dir ./Databases/MongoDB && \
+    pip install --no-cache-dir ./Business && \
+    pip install --no-cache-dir ./API
 
 FROM python:3.10-slim
 
 COPY --from=base /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-COPY app app
+COPY ./API/app app
 
 CMD [ "python", "-m", "app" ]
