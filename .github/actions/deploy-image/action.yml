@@ -22,10 +22,6 @@ runs:
         password: ${{ github.token }}
 
     - name: Build and Push
-      env:
-        REGISTRY: ghcr.io
-        REPOSITORY: test-repo
-        IMAGE_TAG: ${{ github.sha }}
       uses: docker/build-push-action@v3
       with:
         cache-from: type=gha
@@ -34,4 +30,4 @@ runs:
         context: ./Project-Template/
         push: ${{ inputs.push }}
         file: ./Project-Template/API/Dockerfile
-        tags: $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        tags: ghcr.io/${{ github.repository_owner }}/test-repo:latest
