@@ -12,20 +12,36 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Build and Push Image
-        id: build
-        uses: ./.github/actions/deploy-image
+      # - name: Set SSH agent
+      #   if: inputs.ssh
+      #   uses: webfactory/ssh-agent@v0.7.0
+      #   with:
+      #     ssh-private-key: ${{ inputs.deploy-keys }}
+
+      # - name: Prepare git and ssh config for build context
+      #   run: |
+      #     mkdir ./Project-Template/root-config
+      #     cp -r ~/.gitconfig ~/.ssh ./Project-Template/root-config/
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-Buildx-action@v2
+        id: buildx
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
         with:
-          dockerfile: ./Project-Template/API/Dockerfile
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ github.token }}
+
+      - name: Build and Push
+        uses: docker/build-push-action@v3
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          # ssh: default=${{ env.SSH_AUTH_SOCK }}
           context: ./Project-Template
+          file: ./Project-Template/API/Dockerfile
+          tags: ghcr.io/cristovamsilva/test-repo:latest
           push: true
-
-      # - name: Deploy Cloud Services
-      #   run: aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --force-new-deployment
-
-  # Report:
-  #   needs: [Deploy]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Report
-  #       run: echo "Reports"

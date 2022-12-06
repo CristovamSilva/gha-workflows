@@ -1,41 +1,60 @@
 name: "Build and Push Image"
 description: "Build and Push Image to the Registry"
+inputs:
+  iam-role:
+    description: IAM role to assume.
+    required: true
+    type: string
+
+  aws-region:
+    description: AWS Region.
+    required: true
+    default: us-east-1
+    type: string
+
+  ecs-cluster:
+    description: AWS ECS Cluster.
+    required: true
+    type: string
+
+  ecs-service:
+    description: AWS ECS Service.
+    required: true
+    type: string
+
 runs:
   using: "composite"
   steps:
-    - name: Configure AWS credentials
+    - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
-
-    # - name: Configure AWS Credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     role-to-assume: arn:aws:iam::123456789100:role/my-github-actions-role
-    #     aws-region: us-east-2
+        role-to-assume: ${{ inputs.iam-role }}
+        aws-region: ${{ inputs.aws-region }}
 
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-Buildx-action@v2
-      id: Buildx
-
-    - name: Build and Push to ECR
-      env:
-        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        REPOSITORY: my-ecr-repo
-        IMAGE_TAG: ${{ github.sha }}
-      uses: docker/build-push-action@v3
+    - name: Build and Push Image
+      id: build
+      uses: ./.github/actions/deploy-image
       with:
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-        builder: ${{ steps.buildx.outputs.name }}
-        context: ./Project-Template/API/
-        push: true
-        file: ./Project-Template/API/Dockerfile
-        ssh: default=${{ env.SSH_AUTH_SOCK }}
-        tags: $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        dockerfile: ./Project-Template/API/Dockerfile
+        context: ./Project-Template
+        tags: amazon/amazon-ecs-sample:latest
+
+    - name: Render Amazon ECS task definition
+      id: render-app
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        container-name: app
+        image: amazon/amazon-ecs-sample:latest
+        environment-variables: "LOG_LEVEL=info"
+
+    - name: Deploy to Amazon ECS service
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.render-app.outputs.task-definition }}
+        cluster: ${{ inputs.ecs-cluster}}
+        service: ${{ inputs.ecs-service }}
