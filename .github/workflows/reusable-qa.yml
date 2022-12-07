@@ -43,6 +43,7 @@ jobs:
         uses: ./.github/actions/cache-dependencies
 
       - name: Sort Imports using isort
+        continue-on-error: true
         if: inputs.sort
         run: isort ${{ inputs.module-directory }} --diff
 
@@ -56,6 +57,7 @@ jobs:
         uses: ./.github/actions/cache-dependencies
 
       - name: Format using Black
+        continue-on-error: true
         if: inputs.format
         run: black ${{ inputs.module-directory }} --diff --color
 
@@ -69,6 +71,7 @@ jobs:
         uses: ./.github/actions/cache-dependencies
 
       - name: Format using Black
+        continue-on-error: true
         if: inputs.StaticTypeCheck
         run: mypy ${{ inputs.module-directory }}
 
@@ -94,6 +97,7 @@ jobs:
 
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
+
       - name: Lint with flake8
         if: inputs.lint-with-flake8
         continue-on-error: true
