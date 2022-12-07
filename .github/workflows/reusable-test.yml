@@ -16,7 +16,8 @@ jobs:
 
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
-
+        with:
+          module-directory: ${{ inputs.module-directory }}
       - name: Test Module
         run: pytest ${{ inputs.module-directory }} --cov=${{ inputs.module-directory }}
 
