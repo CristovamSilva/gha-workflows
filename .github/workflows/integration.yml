@@ -20,23 +20,23 @@ jobs:
 
   Quality:
     needs: [Build]
-    uses: ./.github/workflows/reusables/reusable-qa.yml
+    uses: ./.github/workflows/reusable-qa.yml
     with:
       module-directory: $MODULE
 
   Security:
     needs: [Build]
-    uses: ./.github/workflows/reusables/reusable-security.yml
+    uses: ./.github/workflows/reusable-security.yml
     with:
       module-directory: $MODULE
 
   Test:
     needs: [Build]
-    uses: ./.github/workflows/reusables/reusable-test.yml
+    uses: ./.github/workflows/reusable-test.yml
     with:
       module-directory: $MODULE
 
   Report:
     needs: [Quality, Security, Test]
     if: always()
-    uses: ./.github/workflows/reusables/reusable-report.yml
+    uses: ./.github/workflows/reusable-report.yml
