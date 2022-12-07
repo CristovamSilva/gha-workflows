@@ -1,0 +1,10 @@
+name: Reusable Report
+on:
+  workflow_call:
+
+jobs:
+  Report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        run: echo "Report"
