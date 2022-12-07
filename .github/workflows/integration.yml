@@ -5,7 +5,9 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     branches: [main]
+
 env:
+  APP: ./Project-Template
   MODULE: ./Project-Template
 
 jobs:
@@ -18,27 +20,27 @@ jobs:
       - name: Setup Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
         with:
-          app-directory: ./Project-Template
+          app-directory: $APP
 
   Quality:
     needs: [Build]
     uses: ./.github/workflows/reusable-qa.yml
     with:
-      app-directory: ./Project-Template
+      app-directory: $APP
       module-directory: $MODULE
 
   Security:
     needs: [Build]
     uses: ./.github/workflows/reusable-security.yml
     with:
-      app-directory: ./Project-Template
+      app-directory: $APP
       module-directory: $MODULE
 
   Test:
     needs: [Build]
     uses: ./.github/workflows/reusable-test.yml
     with:
-      app-directory: ./Project-Template
+      app-directory: $APP
       module-directory: $MODULE
 
   Report:

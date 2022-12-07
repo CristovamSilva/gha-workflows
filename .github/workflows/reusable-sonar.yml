@@ -12,10 +12,6 @@ on:
         description: sonarcloud host
         required: false
     inputs:
-      module-directory:
-        description: What folder to analyzie
-        required: true
-        type: string
       scan-with-sonarcloud:
         description: Whether to scan with Sonar Cloud.
         required: false
