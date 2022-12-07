@@ -2,6 +2,10 @@ name: Reusable QA
 on:
   workflow_call:
     inputs:
+      app-directory:
+        description: What folder to search for requirements
+        required: true
+        type: string
       module-directory:
         description: What folder to analyzie
         required: true
@@ -42,7 +46,7 @@ jobs:
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
         with:
-          module-directory: ${{ inputs.module-directory }}
+          app-directory: ${{ inputs.app-directory }}
 
       - name: Sort Imports using isort
         continue-on-error: true
@@ -58,7 +62,7 @@ jobs:
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
         with:
-          module-directory: ${{ inputs.module-directory }}
+          app-directory: ${{ inputs.app-directory }}
 
       - name: Format using Black
         continue-on-error: true
@@ -74,7 +78,7 @@ jobs:
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
         with:
-          module-directory: ${{ inputs.module-directory }}
+          app-directory: ${{ inputs.app-directory }}
 
       - name: Format using Black
         continue-on-error: true
@@ -90,7 +94,7 @@ jobs:
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
         with:
-          module-directory: ${{ inputs.module-directory }}
+          app-directory: ${{ inputs.app-directory }}
 
       - name: Lint with pylint
         continue-on-error: true
@@ -106,7 +110,7 @@ jobs:
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
         with:
-          module-directory: ${{ inputs.module-directory }}
+          app-directory: ${{ inputs.app-directory }}
 
       - name: Lint with flake8
         continue-on-error: true

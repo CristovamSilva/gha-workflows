@@ -2,6 +2,10 @@ name: Reusable Test
 on:
   workflow_call:
     inputs:
+      app-directory:
+        description: What folder to search for requirements
+        required: true
+        type: string
       module-directory:
         description: What folder to analyze.
         required: true
@@ -17,7 +21,7 @@ jobs:
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
         with:
-          module-directory: ${{ inputs.module-directory }}
+          app-directory: ${{ inputs.app-directory }}
 
       - name: Test Module
         run: pytest ${{ inputs.module-directory }} --cov=${{ inputs.module-directory }}

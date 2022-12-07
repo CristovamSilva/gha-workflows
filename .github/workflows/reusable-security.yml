@@ -12,6 +12,10 @@ on:
         description: sonarcloud host
         required: false
     inputs:
+      app-directory:
+        description: What folder to search for requirements
+        required: true
+        type: string
       module-directory:
         description: What folder to analyzie
         required: true
@@ -37,7 +41,7 @@ jobs:
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
         with:
-          module-directory: ${{ inputs.module-directory }}
+          app-directory: ${{ inputs.app-directory }}
 
       - name: Verify with Bandit
         continue-on-error: true
