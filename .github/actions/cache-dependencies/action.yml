@@ -22,19 +22,19 @@ runs:
     - name: Install Application Dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        if [ -f ${{ inputs.app-directory }}/requirements.txt ]; then pip install -r ${{ inputs.app-directory }}/requirements.txt }}; fi
+        if [ -f ${{ inputs.app-directory }}/requirements.txt ]; then pip install -r ${{ inputs.app-directory }}/requirements.txt; fi
       shell: bash
 
     - name: Install QA Dependencies
       run: |
         pip install --upgrade isort black mypy flake8 pylint
-        if [ -f ${{ inputs.app-directory }}/requirements-qa.txt ]; then pip install -r ${{ inputs.app-directory }}/requirements-qa.txt }}; fi
+        if [ -f ${{ inputs.app-directory }}/requirements-qa.txt ]; then pip install -r ${{ inputs.app-directory }}/requirements-qa.txt; fi
       shell: bash
 
     - name: Install Security Dependencies
       run: |
         pip install --upgrade bandit
-        if [ -f ${{ inputs.app-directory }}/requirements-sec.txt ]; then pip install -r ${{ inputs.app-directory }}/requirements-sec.txt }}; fi
+        if [ -f ${{ inputs.app-directory }}/requirements-sec.txt ]; then pip install -r ${{ inputs.app-directory }}/requirements-sec.txt; fi
       shell: bash
 
     - name: Install Test Dependencies
@@ -42,5 +42,5 @@ runs:
         requirements_path:
       run: |
         pip install --upgrade pytest pytest-cov
-        if [ -f ${{ inputs.app-directory }}/requirements-test.txt ]; then pip install -r ${{ inputs.app-directory }}/requirements-test.txt }}; fi
+        if [ -f ${{ inputs.app-directory }}/requirements-test.txt ]; then pip install -r ${{ inputs.app-directory }}/requirements-test.txt; fi
       shell: bash
