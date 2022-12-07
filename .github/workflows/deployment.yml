@@ -23,10 +23,6 @@ jobs:
       #     mkdir ./Project-Template/root-config
       #     cp -r ~/.gitconfig ~/.ssh ./Project-Template/root-config/
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-Buildx-action@v2
-        id: buildx
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -34,12 +30,16 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ github.token }}
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-Buildx-action@v2
+        id: buildx
+
       - name: Build and Push
         uses: docker/build-push-action@v3
         with:
           builder: ${{ steps.buildx.outputs.name }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          # cache-from: type=gha
+          # cache-to: type=gha,mode=max
           # ssh: default=${{ env.SSH_AUTH_SOCK }}
           context: ./Project-Template
           file: ./Project-Template/API/Dockerfile
