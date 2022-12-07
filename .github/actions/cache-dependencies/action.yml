@@ -1,7 +1,7 @@
 name: "Cache Dependencies"
 description: "Setup Python with pip Cache and Install Dependencies"
 inputs:
-  app-directory }}:
+  app-directory:
     description: What folder to search for requirements
     required: true
     type: string
