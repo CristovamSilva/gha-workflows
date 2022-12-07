@@ -1,4 +1,4 @@
-name: Reusable Security
+name: Reusable Sonar
 on:
   workflow_call:
     secrets:
@@ -28,15 +28,28 @@ on:
         type: boolean
 
 jobs:
-  Bandit:
+  SonarCloudTrigger:
     runs-on: ubuntu-latest
+    if: inputs.scan-with-sonarcloud
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-      - name: Load Cache & Dependencies
-        uses: ./.github/actions/cache-dependencies
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      - name: Verify with Bandit
-        continue-on-error: true
-        run: bandit -r ${{ inputs.module-directory }}
+  SonarQubeTrigger:
+    runs-on: ubuntu-latest
+    if: inputs.scan-with-sonarqube
+    steps:
+      - uses: actions/checkout@master
+      - name: SonarQube Scan
+        uses: kitabisa/sonarqube-action@master
+        with:
+          host: ${{ secrets.SONARQUBE_HOST }}
+          login: ${{ secrets.SONARQUBE_TOKEN }}
