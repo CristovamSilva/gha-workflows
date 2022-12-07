@@ -26,18 +26,3 @@ jobs:
       #     name: pytest-results
       #     path: junit/test-results.xml
       #   if: ${{ always() }}
-
-  # Coverage:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v3
-
-  #     - name: Load Cache & Dependencies
-  #       uses: ./.github/actions/cache-dependencies
-
-  #     - name: Verify Coverage with pytest-cov
-  #       run: pytest --cov=${{ inputs.module-directory }}
-
-  # - name: Verify Coverage with coverage
-  #   run: coverage run -m pytest ${{ inputs.module-directory }}

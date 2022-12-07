@@ -16,6 +16,11 @@ on:
         required: false
         default: true
         type: boolean
+      StaticTypeCheck:
+        description: Whether to run black.
+        required: false
+        default: true
+        type: boolean
       lint-with-flake8:
         description: Whether to run flake8.
         required: false
@@ -28,7 +33,7 @@ on:
         type: boolean
 
 jobs:
-  SortAndFormat:
+  Sort:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -41,11 +46,33 @@ jobs:
         if: inputs.sort
         run: isort ${{ inputs.module-directory }} --diff
 
+  Format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Load Cache & Dependencies
+        uses: ./.github/actions/cache-dependencies
+
       - name: Format using Black
         if: inputs.format
         run: black ${{ inputs.module-directory }} --diff --color
 
-  Lint:
+  StaticTypeCheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Load Cache & Dependencies
+        uses: ./.github/actions/cache-dependencies
+
+      - name: Format using Black
+        if: inputs.StaticTypeCheck
+        run: mypy ${{ inputs.module-directory }}
+
+  Lint-Pylint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -59,6 +86,14 @@ jobs:
         continue-on-error: true
         run: pylint ${{ inputs.module-directory }}
 
+  Lint-Flake8:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Load Cache & Dependencies
+        uses: ./.github/actions/cache-dependencies
       - name: Lint with flake8
         if: inputs.lint-with-flake8
         continue-on-error: true
