@@ -1,5 +1,10 @@
 name: "Cache Dependencies"
 description: "Setup Python with pip Cache and Install Dependencies"
+inputs:
+  module-directory:
+    description: What folder to search for requirements
+    required: true
+    type: string
 
 runs:
   using: "composite"
@@ -17,26 +22,23 @@ runs:
     - name: Install Application Dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        pip install ./Project-Template/Databases/MemoryDB
-        pip install ./Project-Template/Databases/MongoDB
-        pip install ./Project-Template/Business
-        pip install ./Project-Template/API
+        if [ -f ${{ inputs.module-directory/requirements.txt ]; then pip install -r ${{ inputs.module-directory/requirements.txt }}; fi
       shell: bash
 
     - name: Install QA Dependencies
       run: |
         pip install --upgrade isort black mypy flake8 pylint
-        if [ -f ./Project-Template/requirements-qa.txt ]; then pip install -r ./Project-Template/requirements-qa.txt; fi
+        if [ -f ${{ inputs.module-directory/requirements-qa.txt ]; then pip install -r ${{ inputs.module-directory/requirements-qa.txt }}; fi
       shell: bash
 
     - name: Install Security Dependencies
       run: |
         pip install --upgrade bandit
-        if [ -f ./Project-Template/requirements-sec.txt ]; then pip install -r ./Project-Template/requirements-sec.txt; fi
+        if [ -f ${{ inputs.module-directory/requirements-sec.txt ]; then pip install -r ${{ inputs.module-directory/requirements-sec.txt }}; fi
       shell: bash
 
     - name: Install Test Dependencies
       run: |
         pip install --upgrade pytest pytest-cov
-        if [ -f ./Project-Template/requirements-test.txt ]; then pip install -r ./Project-Template/requirements-test.txt; fi
+        if [ -f ${{ inputs.module-directory/requirements-test.txt ]; then pip install -r ${{ inputs.module-directory/requirements-test.txt }}; fi
       shell: bash

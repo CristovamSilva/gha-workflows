@@ -41,6 +41,8 @@ jobs:
 
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
+        with:
+          module-directory: ${{ inputs.module-directory }}
 
       - name: Sort Imports using isort
         continue-on-error: true
@@ -55,6 +57,8 @@ jobs:
 
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
+        with:
+          module-directory: ${{ inputs.module-directory }}
 
       - name: Format using Black
         continue-on-error: true
@@ -69,6 +73,8 @@ jobs:
 
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
+        with:
+          module-directory: ${{ inputs.module-directory }}
 
       - name: Format using Black
         continue-on-error: true
@@ -83,6 +89,8 @@ jobs:
 
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
+        with:
+          module-directory: ${{ inputs.module-directory }}
 
       - name: Lint with pylint
         continue-on-error: true
@@ -97,6 +105,8 @@ jobs:
 
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
+        with:
+          module-directory: ${{ inputs.module-directory }}
 
       - name: Lint with flake8
         continue-on-error: true

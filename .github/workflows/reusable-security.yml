@@ -36,6 +36,8 @@ jobs:
 
       - name: Load Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
+        with:
+          module-directory: ${{ inputs.module-directory }}
 
       - name: Verify with Bandit
         continue-on-error: true
