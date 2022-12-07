@@ -17,6 +17,8 @@ jobs:
 
       - name: Setup Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
+        with:
+          module-directory: $MODULE
 
   Quality:
     needs: [Build]
