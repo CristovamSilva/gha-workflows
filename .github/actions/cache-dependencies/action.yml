@@ -5,6 +5,8 @@ inputs:
     description: What folder to search for requirements
     required: true
     type: string
+outputs:
+  app-directory: ${{ inputs.app-directory }}
 
 runs:
   using: "composite"
