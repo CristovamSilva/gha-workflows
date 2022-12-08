@@ -65,6 +65,6 @@ jobs:
   #     message: ${{ env.APP }}
 
   Report-Action:
-    uses: ./.github/actions/cache-dependencies
+    uses: ./.github/actions/echo
     with: # Allowed expression contexts: github, and needs.
       message: ${{ env.APP }}
