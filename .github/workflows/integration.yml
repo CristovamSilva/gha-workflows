@@ -19,11 +19,11 @@ jobs:
     steps:
       - name: Set Dependencies Directory
         id: app-dir
-        run: echo "dir=$APP" >> $GITHUB_OUTPUT
+        run: echo dir=$APP >> $GITHUB_OUTPUT
 
       - name: Set DUT Directory
         id: module-dir
-        run: echo "dir=$MODULE" >> $GITHUB_OUTPUT
+        run: echo "ir=$MODULE >> $GITHUB_OUTPUT
 
   Build:
     needs: [Config]
