@@ -6,11 +6,12 @@ on:
     types: [opened, synchronize, reopened]
     branches: [main]
 
-defaults:
-  run:
-    working-directory: ./Project-Template
-
 jobs:
+  # Config:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Set Configuration Variables
+  #       run:
   Build:
     runs-on: ubuntu-latest
     steps:

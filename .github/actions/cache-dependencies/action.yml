@@ -10,6 +10,11 @@ outputs:
     description: App Deps Directory
     value: ${{ inputs.app-directory }}
 
+defaults:
+  run:
+    shell: bash
+    working-directory: ${{ inputs.app-directory }}
+
 runs:
   using: "composite"
   steps:
@@ -22,31 +27,20 @@ runs:
           **/requirements*.txt
           **/setup.py
 
-    - name: Current Dir
-      run: pwd
-      shell: bash
-
-    - name: list files
-      run: ls -la
-      shell: bash
-
     - name: Install Application Dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      shell: bash
 
     - name: Install QA Dependencies
       run: |
         pip install --upgrade isort black mypy flake8 pylint
         if [ -f requirements-qa.txt ]; then pip install -r requirements-qa.txt; fi
-      shell: bash
 
     - name: Install Security Dependencies
       run: |
         pip install --upgrade bandit
         if [ -f requirements-sec.txt ]; then pip install -r requirements-sec.txt; fi
-      shell: bash
 
     - name: Install Test Dependencies
       env:
@@ -54,4 +48,3 @@ runs:
       run: |
         pip install --upgrade pytest pytest-cov
         if [ -f requirements-test.txt ]; then pip install -r requirements-test.txt; fi
-      shell: bash
