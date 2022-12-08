@@ -24,9 +24,11 @@ runs:
 
     - name: Current Dir
       run: pwd
+      shell: bash
 
     - name: list files
       run: ls -la
+      shell: bash
 
     - name: Install Application Dependencies
       run: |
