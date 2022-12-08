@@ -32,10 +32,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Print env message
+        run: echo "${{ needs.Config.outputs.app-directory }}"
+
       - name: Setup Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
         with: # Allowed expression contexts: github, and needs.
-          app-directory: ${{needs.Config.outputs.app-directory}}
+          app-directory: ${{ needs.Config.outputs.app-directory }}
 
   # Quality:
   #   needs: [Build]
