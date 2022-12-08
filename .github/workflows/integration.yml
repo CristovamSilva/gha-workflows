@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Set Dependencies Directory
         id: app-dir
-        run: echo "dir=$APP >> $GITHUB_OUTPUT
+        run: echo "dir=$APP" >> $GITHUB_OUTPUT
 
       - name: Set DUT Directory
         id: module-dir
@@ -60,7 +60,6 @@ jobs:
 
   Report:
     # needs: [Quality, Security, Test]
-    if: always()
     uses: ./.github/workflows/reusable-report.yml
     with:
-      message: ${{ github.env }}
+      message: ${{ env.APP }}
