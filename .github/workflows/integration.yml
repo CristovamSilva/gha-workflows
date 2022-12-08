@@ -26,8 +26,8 @@ jobs:
     needs: [Build]
     uses: ./.github/workflows/reusable-qa.yml
     with:
-      app-directory: "${{ env.APP }}"
-      module-directory: "${{ env.MODULE }}"
+      app-directory: ${{ env.APP }}
+      module-directory: ${{ env.MODULE }}
 
   Security:
     needs: [Build]
