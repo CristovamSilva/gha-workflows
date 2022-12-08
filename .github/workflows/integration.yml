@@ -8,7 +8,7 @@ on:
 
 env:
   APP: ./Project-Template
-  MODULE: ./Project-Template
+  MODULE: ./Project-Template/Module-Dir
 
 jobs:
   Config:
