@@ -1,10 +1,20 @@
 name: "Cache Dependencies"
+
 description: "Setup Python with pip Cache and Install Dependencies"
+
 inputs:
   app-directory:
     description: What folder to search for requirements
-    required: true
+    required: false
+    default: "."
     type: string
+
+  python-version:
+    description: What python version to use
+    required: false
+    default: "3.10"
+    type: string
+
 outputs:
   app-directory:
     description: App Deps Directory
@@ -12,11 +22,12 @@ outputs:
 
 runs:
   using: "composite"
+
   steps:
     - name: Setup Python with pip Cache
       uses: actions/setup-python@v4
       with:
-        python-version: "3.10"
+        python-version: ${{ inputs.python-version }}
         cache: "pip"
         cache-dependency-path: |
           **/requirements*.txt

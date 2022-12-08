@@ -7,15 +7,26 @@ on:
     branches: [main]
 
 env:
-  message: "./Project-Template"
+  APP: ./Project-Template
+  MODULE: ./Project-Template
 
 jobs:
-  # Config:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Set Configuration Variables
-  #       run:
+  Config:
+    runs-on: ubuntu-latest
+    outputs:
+      app-directory: ${{ steps.app-dir.outputs.dir }}
+      module-directory: ${{ steps.module-dir.outputs.dir }}
+    steps:
+      - name: Set Dependencies Directory
+        id: app-dir
+        run: echo "dir=$APP >> $GITHUB_OUTPUT
+
+      - name: Set DUT Directory
+        id: module-dir
+        run: echo "dir=$MODULE" >> $GITHUB_OUTPUT
+
   Build:
+    needs: [Config]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -24,7 +35,7 @@ jobs:
       - name: Setup Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
         with: # Allowed expression contexts: github, and needs.
-          app-directory: ./Project-Template
+          app-directory: ${{needs.Config.outputs.app-directory}}
 
   # Quality:
   #   needs: [Build]
@@ -48,7 +59,7 @@ jobs:
   #     module-directory: ./Project-Template
 
   Report:
-    needs: [Build] #[Quality, Security, Test]
+    # needs: [Quality, Security, Test]
     if: always()
     uses: ./.github/workflows/reusable-report.yml
     with:
