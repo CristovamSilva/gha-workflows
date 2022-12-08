@@ -12,12 +12,6 @@ defaults:
     working-directory: ./Project-Template
 
 jobs:
-  Config:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set Config
-        run: echo
-
   Build:
     needs: [Config]
     runs-on: ubuntu-latest
