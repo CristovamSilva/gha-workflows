@@ -44,8 +44,8 @@ jobs:
       module-directory: ./Project-Template
 
   Report:
-    needs: [Quality, Security, Test]
+    needs: [Build] #[Quality, Security, Test]
     if: always()
     uses: ./.github/workflows/reusable-report.yml
     with:
-      message: $APP
+      message: ${{ env.APP }}
