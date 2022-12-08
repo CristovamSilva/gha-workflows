@@ -47,3 +47,5 @@ jobs:
     needs: [Quality, Security, Test]
     if: always()
     uses: ./.github/workflows/reusable-report.yml
+    with:
+      message: $APP

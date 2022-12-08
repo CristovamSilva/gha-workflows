@@ -24,6 +24,7 @@ jobs:
           app-directory: ${{ inputs.app-directory }}
 
       - name: Test Module
+        continue-on-error: true
         run: pytest ${{ inputs.module-directory }} --cov=${{ inputs.module-directory }}
 
       # - name: Upload pytest test results
