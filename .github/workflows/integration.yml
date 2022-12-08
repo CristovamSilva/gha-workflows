@@ -6,6 +6,9 @@ on:
     types: [opened, synchronize, reopened]
     branches: [main]
 
+env:
+  message: "./Project-Template"
+
 jobs:
   # Config:
   #   runs-on: ubuntu-latest
@@ -23,26 +26,26 @@ jobs:
         with: # Allowed expression contexts: github, and needs.
           app-directory: ./Project-Template
 
-  Quality:
-    needs: [Build]
-    uses: ./.github/workflows/reusable-qa.yml
-    with:
-      app-directory: ${{needs.Build.outputs.app-directory}}
-      module-directory: ./Project-Template
+  # Quality:
+  #   needs: [Build]
+  #   uses: ./.github/workflows/reusable-qa.yml
+  #   with:
+  #     app-directory: ${{needs.Build.outputs.app-directory}}
+  #     module-directory: ./Project-Template
 
-  Security:
-    needs: [Build]
-    uses: ./.github/workflows/reusable-security.yml
-    with:
-      app-directory: ${{needs.Build.outputs.app-directory}}
-      module-directory: ./Project-Template
+  # Security:
+  #   needs: [Build]
+  #   uses: ./.github/workflows/reusable-security.yml
+  #   with:
+  #     app-directory: ${{needs.Build.outputs.app-directory}}
+  #     module-directory: ./Project-Template
 
-  Test:
-    needs: [Build]
-    uses: ./.github/workflows/reusable-test.yml
-    with:
-      app-directory: ${{needs.Build.outputs.app-directory}}
-      module-directory: ./Project-Template
+  # Test:
+  #   needs: [Build]
+  #   uses: ./.github/workflows/reusable-test.yml
+  #   with:
+  #     app-directory: ${{needs.Build.outputs.app-directory}}
+  #     module-directory: ./Project-Template
 
   Report:
     needs: [Build] #[Quality, Security, Test]
