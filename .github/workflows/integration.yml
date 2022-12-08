@@ -6,12 +6,20 @@ on:
     types: [opened, synchronize, reopened]
     branches: [main]
 
-env:
-  APP: ./Project-Template
-  MODULE: ./Project-Template
+defaults:
+  run:
+    shell: bash
+    working-directory: ./Project-Template
 
 jobs:
+  Config:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Config
+        run: echo
+
   Build:
+    needs: [Config]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -19,7 +27,7 @@ jobs:
 
       - name: Setup Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
-        with:
+        with: # Allowed expression contexts: github, and needs.
           app-directory: ./Project-Template
 
   Quality:
