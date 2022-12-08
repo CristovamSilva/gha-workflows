@@ -20,28 +20,28 @@ jobs:
       - name: Setup Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
         with:
-          app-directory: ${{ env.APP }}
+          app-directory: ./Project-Template
 
   Quality:
     needs: [Build]
     uses: ./.github/workflows/reusable-qa.yml
     with:
-      app-directory: ${{ env.APP }}
-      module-directory: ${{ env.MODULE }}
+      app-directory: ./Project-Template
+      module-directory: ./Project-Template
 
   Security:
     needs: [Build]
     uses: ./.github/workflows/reusable-security.yml
     with:
-      app-directory: ${{ env.APP }}
-      module-directory: ${{ env.MODULE }}
+      app-directory: ./Project-Template
+      module-directory: ./Project-Template
 
   Test:
     needs: [Build]
     uses: ./.github/workflows/reusable-test.yml
     with:
-      app-directory: ${{ env.APP }}
-      module-directory: ${{ env.MODULE }}
+      app-directory: ./Project-Template
+      module-directory: ./Project-Template
 
   Report:
     needs: [Quality, Security, Test]
