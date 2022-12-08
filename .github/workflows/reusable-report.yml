@@ -11,4 +11,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        run: echo ${{inputs.message}}
+        run: echo "${{inputs.message}}"
