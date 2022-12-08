@@ -8,7 +8,7 @@ on:
 
 env:
   APP: ./Project-Template
-  MODULE: ./Project-Template/Module-Dir
+  MODULE: ./Project-Template
 
 jobs:
   Config:
@@ -42,21 +42,21 @@ jobs:
     uses: ./.github/workflows/reusable-qa.yml
     with:
       app-directory: ${{ needs.Config.outputs.app-directory }}
-      module-directory: ./Project-Template
+      module-directory: ${{ needs.Config.outputs.module-directory }}
 
   Security:
     needs: [Config, Build]
     uses: ./.github/workflows/reusable-security.yml
     with:
       app-directory: ${{ needs.Config.outputs.app-directory }}
-      module-directory: ./Project-Template
+      module-directory: ${{ needs.Config.outputs.module-directory }}
 
   Test:
     needs: [Config, Build]
     uses: ./.github/workflows/reusable-test.yml
     with:
       app-directory: ${{ needs.Config.outputs.app-directory }}
-      module-directory: ./Project-Template
+      module-directory: ${{ needs.Config.outputs.module-directory }}
 
   # Report:
   #   # needs: [Quality, Security, Test]
