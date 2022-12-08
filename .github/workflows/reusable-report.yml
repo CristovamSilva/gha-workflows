@@ -1,14 +1,10 @@
 name: Reusable Report
 on:
   workflow_call:
-    inputs:
-      message:
-        description: What folder to search for requirements
-        required: true
-        type: string
+
 jobs:
   Report:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        run: echo "${{inputs.message}}"
+        run: echo "Report"
