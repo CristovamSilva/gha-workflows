@@ -52,8 +52,6 @@ runs:
       shell: bash
 
     - name: Install Test Dependencies
-      env:
-        requirements_path:
       run: |
         pip install --upgrade pytest pytest-cov
         if [ -f ${{ inputs.app-directory }}/requirements-test.txt ]; then pip install -r ${{ inputs.app-directory }}/requirements-test.txt; fi

@@ -58,8 +58,13 @@ jobs:
   #     app-directory: ${{needs.Build.outputs.app-directory}}
   #     module-directory: ./Project-Template
 
-  Report:
-    # needs: [Quality, Security, Test]
-    uses: ./.github/workflows/reusable-report.yml
-    with:
+  # Report:
+  #   # needs: [Quality, Security, Test]
+  #   uses: ./.github/workflows/reusable-report.yml
+  #   with:
+  #     message: ${{ env.APP }}
+
+  Report-Action:
+    uses: ./.github/actions/cache-dependencies
+    with: # Allowed expression contexts: github, and needs.
       message: ${{ env.APP }}
