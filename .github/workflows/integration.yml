@@ -38,24 +38,24 @@ jobs:
           app-directory: ${{ needs.Config.outputs.app-directory }}
 
   Quality:
-    needs: [Build]
+    needs: [Config, Build]
     uses: ./.github/workflows/reusable-qa.yml
     with:
-      app-directory: ${{ jobs.Config.outputs.app-directory }}
+      app-directory: ${{ needs.Config.outputs.app-directory }}
       module-directory: ./Project-Template
 
   Security:
-    needs: [Build]
+    needs: [Config, Build]
     uses: ./.github/workflows/reusable-security.yml
     with:
-      app-directory: ${{ jobs.Config.outputs.app-directory }}
+      app-directory: ${{ needs.Config.outputs.app-directory }}
       module-directory: ./Project-Template
 
   Test:
-    needs: [Build]
+    needs: [Config, Build]
     uses: ./.github/workflows/reusable-test.yml
     with:
-      app-directory: ${{ jobs.Config.outputs.app-directory }}
+      app-directory: ${{ needs.Config.outputs.app-directory }}
       module-directory: ./Project-Template
 
   # Report:
