@@ -23,7 +23,7 @@ jobs:
 
       - name: Set DUT Directory
         id: module-dir
-        run: echo "ir=$MODULE >> $GITHUB_OUTPUT
+        run: echo dir=$MODULE >> $GITHUB_OUTPUT
 
   Build:
     needs: [Config]
