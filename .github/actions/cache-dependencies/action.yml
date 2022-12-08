@@ -24,6 +24,9 @@ runs:
   using: "composite"
 
   steps:
+    - name: Print env message
+      run: echo "${{ inputs.app-directory }}"
+
     - name: Setup Python with pip Cache
       uses: actions/setup-python@v4
       with:
