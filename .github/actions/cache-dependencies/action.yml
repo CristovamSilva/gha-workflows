@@ -6,7 +6,9 @@ inputs:
     required: true
     type: string
 outputs:
-  app-directory: ${{ inputs.app-directory }}
+  app-directory:
+    description: App Deps Directory
+    value: ${{ inputs.app-directory }}
 
 runs:
   using: "composite"

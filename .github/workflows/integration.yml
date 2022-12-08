@@ -26,7 +26,7 @@ jobs:
     needs: [Build]
     uses: ./.github/workflows/reusable-qa.yml
     with:
-      app-directory: ./Project-Template
+      app-directory: ${{needs.Build.outputs.app-directory}}
       module-directory: ./Project-Template
 
   Security:
@@ -40,7 +40,7 @@ jobs:
     needs: [Build]
     uses: ./.github/workflows/reusable-test.yml
     with:
-      app-directory: ./Project-Template
+      app-directory: ${{needs.Build.outputs.app-directory}}
       module-directory: ./Project-Template
 
   Report:
