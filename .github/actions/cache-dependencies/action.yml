@@ -24,6 +24,10 @@ runs:
 
     - name: Current Dir
       run: pwd
+
+    - name: list files
+      run: ls -la
+
     - name: Install Application Dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
