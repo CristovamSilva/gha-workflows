@@ -32,48 +32,34 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Print env message
-        run: echo "${{ needs.Config.outputs.app-directory }}"
-
       - name: Setup Cache & Dependencies
         uses: ./.github/actions/cache-dependencies
-        with: # Allowed expression contexts: github, and needs.
+        with:
           app-directory: ${{ needs.Config.outputs.app-directory }}
 
-  # Quality:
-  #   needs: [Build]
-  #   uses: ./.github/workflows/reusable-qa.yml
-  #   with:
-  #     app-directory: ${{needs.Build.outputs.app-directory}}
-  #     module-directory: ./Project-Template
+  Quality:
+    needs: [Build]
+    uses: ./.github/workflows/reusable-qa.yml
+    with:
+      app-directory: ${{ jobs.Config.outputs.app-directory }}
+      module-directory: ./Project-Template
 
-  # Security:
-  #   needs: [Build]
-  #   uses: ./.github/workflows/reusable-security.yml
-  #   with:
-  #     app-directory: ${{needs.Build.outputs.app-directory}}
-  #     module-directory: ./Project-Template
+  Security:
+    needs: [Build]
+    uses: ./.github/workflows/reusable-security.yml
+    with:
+      app-directory: ${{ jobs.Config.outputs.app-directory }}
+      module-directory: ./Project-Template
 
-  # Test:
-  #   needs: [Build]
-  #   uses: ./.github/workflows/reusable-test.yml
-  #   with:
-  #     app-directory: ${{needs.Build.outputs.app-directory}}
-  #     module-directory: ./Project-Template
+  Test:
+    needs: [Build]
+    uses: ./.github/workflows/reusable-test.yml
+    with:
+      app-directory: ${{ jobs.Config.outputs.app-directory }}
+      module-directory: ./Project-Template
 
   # Report:
   #   # needs: [Quality, Security, Test]
   #   uses: ./.github/workflows/reusable-report.yml
   #   with:
   #     message: ${{ env.APP }}
-
-  # Report-Action:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v3
-
-  #     - name: Echo
-  #       uses: ./.github/actions/echo
-  #       with: # Allowed expression contexts: github, and needs.
-  #         message: ${{ env.APP }}
