@@ -31,7 +31,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ${{ inputs.app-directory }}
+        working-directory: ${{ needs.Config.outputs.app-directory }}
 
     steps:
       - name: Checkout Repository
