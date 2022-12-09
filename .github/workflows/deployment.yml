@@ -31,6 +31,6 @@ jobs:
           # cache-to: type=gha,mode=max
           # ssh: default=${{ env.SSH_AUTH_SOCK }}
           context: ./Project-Template
-          file: ./Dockerfile
+          file: ./Project-Template/Dockerfile
           tags: ghcr.io/cristovamsilva/test-repo:latest
           push: false
