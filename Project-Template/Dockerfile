@@ -19,9 +19,9 @@ RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
 WORKDIR /build
-COPY . Project-Template
+COPY . .
 RUN --mount=type=cache,target=/root/.cache/pip pip install --upgrade pip setuptools wheel && \
-    pip install --no-cache-dir -r ./Project-Template/requirements.txt
+    pip install --no-cache-dir -r ./requirements.txt
 
 FROM python:3.10-slim
 

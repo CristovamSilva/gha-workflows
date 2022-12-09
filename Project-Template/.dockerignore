@@ -1,5 +1,13 @@
-.env
-__pycache__
+**/.git
+**/.gitignore
+**/.vscode
+**/coverage
+**/.env
+**/.aws
+**/.ssh
+Dockerfile
 README.md
-setup.py
-**/tests
+docker-compose.yml
+**/.DS_Store
+**/venv
+**/env
