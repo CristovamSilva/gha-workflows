@@ -1,4 +1,4 @@
-./Project-Template/Databases/MemoryDB
-./Project-Template/Databases/MongoDB
-./Project-Template/Business
-./Project-Template/API
+./Databases/MemoryDB
+./Databases/MongoDB
+./Business
+./API
