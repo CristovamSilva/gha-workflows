@@ -28,6 +28,11 @@ jobs:
   Build:
     needs: [Config]
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.app-directory }}
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3

@@ -19,10 +19,6 @@ outputs:
   app-directory:
     description: App Deps Directory
     value: ${{ inputs.app-directory }}
-defaults:
-  run:
-    shell: bash
-    working-directory: ${{ inputs.app-directory }}
 
 runs:
   using: "composite"
