@@ -18,13 +18,10 @@ eot
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-WORKDIR /app
-COPY . .
+WORKDIR /build
+COPY . Project-Template
 RUN --mount=type=cache,target=/root/.cache/pip pip install --upgrade pip setuptools wheel && \
-    pip install ./Databases/MemoryDB && \
-    pip install ./Databases/MongoDB && \
-    pip install ./Business && \
-    pip install ./API
+    pip install --no-cache-dir -r ./Project-Template/requirements.txt
 
 FROM python:3.10-slim
 
