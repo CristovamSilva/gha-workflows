@@ -1,0 +1,29 @@
+name: "Cache Dependencies"
+
+description: "Setup Python with pip Cache and Install Dependencies"
+
+inputs:
+  app-directory:
+    description: What folder to search for requirements
+    required: false
+    default: "."
+    type: string
+
+  deploy-keys:
+    description: ssh deploy keys
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set SSH agent
+      if: inputs.ssh
+      uses: webfactory/ssh-agent@v0.7.0
+      with:
+        ssh-private-key: ${{ inputs.deploy-keys }}
+
+    - name: Prepare git and ssh config for build context
+      run: |
+        mkdir ${{ input.app-directory }}/root-config
+        cp -r ~/.gitconfig ~/.ssh ${{ input.app-directory }}/root-config/

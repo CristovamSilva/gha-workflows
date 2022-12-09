@@ -15,11 +15,6 @@ inputs:
     default: "3.10"
     type: string
 
-outputs:
-  app-directory:
-    description: App Deps Directory
-    value: ${{ inputs.app-directory }}
-
 runs:
   using: "composite"
   steps:
