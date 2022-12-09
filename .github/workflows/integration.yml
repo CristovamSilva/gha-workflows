@@ -28,10 +28,6 @@ jobs:
   Build:
     needs: [Config]
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: ${{ needs.Config.outputs.app-directory }}
 
     steps:
       - name: Checkout Repository
