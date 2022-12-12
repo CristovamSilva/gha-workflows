@@ -30,11 +30,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      # - name: Checkout Repository
+      #   uses: actions/checkout@v3
 
       - name: Setup Cache & Dependencies
-        uses: ./.github/actions/cache-dependencies
+        uses: cristovamsilva/python-dependencies-action@v1
         with:
           app-directory: ${{ needs.Config.outputs.app-directory }}
 
