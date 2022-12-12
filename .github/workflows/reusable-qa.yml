@@ -40,11 +40,8 @@ jobs:
   Sort:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
       - name: Load Cache & Dependencies
-        uses: ./.github/actions/cache-dependencies
+        uses: cristovamsilva/python-dependencies-action@v1
         with:
           app-directory: ${{ inputs.app-directory }}
 
@@ -56,11 +53,8 @@ jobs:
   Format:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
       - name: Load Cache & Dependencies
-        uses: ./.github/actions/cache-dependencies
+        uses: cristovamsilva/python-dependencies-action@v1
         with:
           app-directory: ${{ inputs.app-directory }}
 
@@ -72,11 +66,8 @@ jobs:
   StaticTypeCheck:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
       - name: Load Cache & Dependencies
-        uses: ./.github/actions/cache-dependencies
+        uses: cristovamsilva/python-dependencies-action@v1
         with:
           app-directory: ${{ inputs.app-directory }}
 
@@ -88,11 +79,8 @@ jobs:
   Lint-Pylint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
       - name: Load Cache & Dependencies
-        uses: ./.github/actions/cache-dependencies
+        uses: cristovamsilva/python-dependencies-action@v1
         with:
           app-directory: ${{ inputs.app-directory }}
 
@@ -104,11 +92,8 @@ jobs:
   Lint-Flake8:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
       - name: Load Cache & Dependencies
-        uses: ./.github/actions/cache-dependencies
+        uses: cristovamsilva/python-dependencies-action@v1
         with:
           app-directory: ${{ inputs.app-directory }}
 
