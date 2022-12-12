@@ -20,13 +20,8 @@ on:
         description: What folder to analyzie
         required: true
         type: string
-      scan-with-sonarcloud:
-        description: Whether to scan with Sonar Cloud.
-        required: false
-        default: false
-        type: boolean
-      scan-with-sonarqube:
-        description: Whether to scan with Sonar Qube.
+      dependency-review:
+        description: Verify problems with dependencies
         required: false
         default: false
         type: boolean
@@ -43,3 +38,16 @@ jobs:
       - name: Verify with Bandit
         continue-on-error: true
         run: bandit -r ${{ inputs.module-directory }}
+
+  Dependency-Review:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    if: inputs.dependency-review
+    steps:
+      - name: "Checkout Repository"
+        uses: actions/checkout@v3
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v3
+        with:
+          config-file: "./.github/dependency-review-config.yml"

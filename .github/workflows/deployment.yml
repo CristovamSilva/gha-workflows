@@ -9,15 +9,19 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          role-to-assume: arn:aws:iam::306094223949:role/GHA-Template-Role
+          role-session-name: TemplateSession
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
       - name: Checkout Repository
         uses: actions/checkout@v3
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ github.token }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-Buildx-action@v2
@@ -32,5 +36,5 @@ jobs:
           # ssh: default=${{ env.SSH_AUTH_SOCK }}
           context: ./Project-Template
           file: ./Project-Template/Dockerfile
-          tags: ghcr.io/cristovamsilva/test-repo:latest
-          push: false
+          tags: 306094223949.dkr.ecr.us-east-1.amazonaws.com/gha-test-repo:${{ github.sha }}
+          push: True

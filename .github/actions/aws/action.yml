@@ -26,9 +26,10 @@ runs:
   using: "composite"
   steps:
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v1-node16
       with:
         role-to-assume: ${{ inputs.iam-role }}
+        role-session-name: TemplateSession
         aws-region: ${{ inputs.aws-region }}
 
     - name: Login to Amazon ECR
