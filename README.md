@@ -4,4 +4,4 @@
 
 ![Deploy](https://github.com/CristovamSilva/gha-workflows/actions/workflows/deployment.yml/badge.svg)
 
-![Test](https://github.com/CristovamSilva/gha-workflows/actions/workflows/reusable-test.yml)
+![Test](https://github.com/CristovamSilva/gha-workflows/actions/workflows/reusable-test.yml/badge.svg)
