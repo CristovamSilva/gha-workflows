@@ -87,15 +87,13 @@ jobs:
             ${{ secrets.DOCKER_DEMO_KEY }}
 
       - name: Create Git & SSH Config Dir
+        env:
+          CONFIG_DIR: "config"
         id: config-dir
         run: |
-          mkdir root-config
-          cp -r ~/.gitconfig  ~/.ssh root-config/
-          echo dir='root-config' >> GITHUB_OUTPUT
-        working-directory: ${{ needs.Config.outputs.app-context }}
-
-      - name: List Dir
-        run: ls -la
+          mkdir ${CONFIG_DIR}
+          cp -r ~/.gitconfig  ~/.ssh ${CONFIG_DIR}/
+          echo dir=${CONFIG_DIR} >> GITHUB_OUTPUT
         working-directory: ${{ needs.Config.outputs.app-context }}
 
       - name: Build & Push Image
@@ -105,6 +103,8 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           context: ${{ needs.Config.outputs.app-context }}
           file: ${{ needs.Config.outputs.app-context }}/Dockerfile
+          build-args: |
+            CONFIG_DIR: ${{ steps.config-dir.outputs.dir }}
           ssh: |
             default=${{ env.SSH_AUTH_SOCK }}
           tags: ${{ steps.login-ecr.outputs.registry }}/${{ needs.Config.outputs.tag }}
