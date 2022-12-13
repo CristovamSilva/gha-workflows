@@ -90,7 +90,7 @@ jobs:
         id: config-dir
         run: |
           mkdir root-config
-          cp -r ~/.gitconfig ~/.ssh root-config/
+          cp -r ~/.gitconfig  ~/.ssh root-config/
           echo dir='root-config' >> GITHUB_OUTPUT
         working-directory: ${{ needs.Config.outputs.app-context }}
 
@@ -101,8 +101,8 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           context: ${{ needs.Config.outputs.app-context }}
           file: ${{ needs.Config.outputs.app-context }}/Dockerfile
-          build-args: |
-            SSH_CONFIG_DIR: ${{ steps.ssh.outputs.config-directory }}
+          ssh: |
+            default=${{ env.SSH_AUTH_SOCK }}
           tags: ${{ steps.login-ecr.outputs.registry }}/${{ needs.Config.outputs.tag }}
           push: True
 
