@@ -99,7 +99,7 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: ${{ needs.Config.outputs.container }}
-          image: ${{ steps.login-ecr.outputs.registry }}/${{ needs.Config.outputs.tag }}:${{ steps.build-image.outputs.digest }}
+          image: ${{ steps.login-ecr.outputs.registry }}/${{ needs.Config.outputs.tag }}
 
       - name: Deploy Task Definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
