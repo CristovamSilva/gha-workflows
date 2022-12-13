@@ -91,8 +91,8 @@ jobs:
           CONFIG_DIR: root-config
         id: config-dir
         run: |
-          mkdir ./$CONFIG_DIR
-          cp -r ~/.gitconfig ~/.ssh ./$CONFIG_DIR/
+          mkdir ${{ needs.Config.outputs.app-context }}/$CONFIG_DIR
+          cp -r ~/.gitconfig ~/.ssh ${{ needs.Config.outputs.app-context }}/$CONFIG_DIR/
           echo dir=$CONFIG_DIR >> GITHUB_OUTPUT
 
       - name: Build and Push Image
