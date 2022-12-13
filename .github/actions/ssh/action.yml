@@ -13,6 +13,7 @@ inputs:
     description: ssh deploy keys
     required: true
     type: string
+
 outputs:
   config-directory:
     description: Directory with ssh and git config
@@ -35,4 +36,4 @@ runs:
         cp -r ~/.gitconfig ~/.ssh .$CONFIG_DIR/
         echo dir=$CONFIG_DIR >> GITHUB_OUTPUT
       shell: bash
-      working-directory: ${{ input.app-directory }}
+      working-directory: ${{ inputs.app-directory }}
