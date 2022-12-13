@@ -9,6 +9,12 @@ inputs:
     default: "."
     type: string
 
+  make-config-dir:
+    description: Add configuration directory to the Application Context
+    required: false
+    default: false
+    type: boolean
+
   deploy-keys:
     description: ssh deploy keys
     required: true
@@ -28,6 +34,7 @@ runs:
         ssh-private-key: ${{ inputs.deploy-keys }}
 
     - name: Prepare git and ssh config for build context
+      if: make-config-dir
       env:
         CONFIG_DIR: ./root-config
       id: config-dir
