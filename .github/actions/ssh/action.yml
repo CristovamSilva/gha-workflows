@@ -39,8 +39,8 @@ runs:
         CONFIG_DIR: ./root-config
       id: config-dir
       run: |
-        mkdir .$CONFIG_DIR
-        cp -r ~/.gitconfig ~/.ssh .$CONFIG_DIR/
+        mkdir ./$CONFIG_DIR
+        cp -r ~/.gitconfig ~/.ssh ./$CONFIG_DIR/
         echo dir=$CONFIG_DIR >> GITHUB_OUTPUT
       shell: bash
       working-directory: ${{ inputs.app-directory }}

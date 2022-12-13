@@ -29,11 +29,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setup Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@v1
-        with:
-          app-directory: ${{ needs.Config.outputs.app-directory }}
-
       - name: Setup Deploy Keys
         uses: ./.github/actions/ssh
         with:
@@ -41,6 +36,11 @@ jobs:
           deploy-keys: |
             ${{ secrets.GHA_WF_KEY }}
             ${{ secrets.DOCKER_DEMO_KEY }}
+
+      - name: Setup Cache & Dependencies
+        uses: cristovamsilva/python-dependencies-action@v1
+        with:
+          app-directory: ${{ needs.Config.outputs.app-directory }}
 
   Quality:
     needs: [Config, Build]

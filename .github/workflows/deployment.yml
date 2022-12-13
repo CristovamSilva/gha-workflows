@@ -79,6 +79,16 @@ jobs:
         uses: docker/setup-Buildx-action@v2
         id: buildx
 
+      - name: Setup Deploy Keys
+        id: ssh
+        uses: ./.github/actions/ssh
+        with:
+          app-directory: ${{ needs.Config.outputs.app-directory }}
+          make-config-dir: true
+          deploy-keys: |
+            ${{ secrets.GHA_WF_KEY }}
+            ${{ secrets.DOCKER_DEMO_KEY }}
+
       - name: Build and Push Image
         id: build-image
         uses: docker/build-push-action@v3
@@ -86,6 +96,8 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           context: ${{ needs.Config.outputs.app-context }}
           file: ${{ needs.Config.outputs.app-context }}/Dockerfile
+          build-args: |
+            SSH_CONFIG_DIR: ${{ steps.ssh.outputs.config-directory }}
           tags: ${{ steps.login-ecr.outputs.registry }}/${{ needs.Config.outputs.tag }}
           push: True
 

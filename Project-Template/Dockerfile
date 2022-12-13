@@ -1,6 +1,8 @@
 # syntax=docker/dockerfile:1
 FROM python:3.10 as base
 
+ARG SSH_CONFIG_DIR=root-config
+
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     <<eot bash
@@ -15,8 +17,8 @@ ssh-keyscan -H github.com >> /root/.ssh/known_hosts
 rm -rf /var/lib/apt/lists/*
 eot
 
-# COPY root-config /root/
-# RUN sed 's|/home/runner|/root|g' -i.bak /root/.ssh/config
+COPY ${SSH_CONFIG_DIR} /root/
+RUN sed 's|/home/runner|/root|g' -i.bak /root/.ssh/config
 
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
