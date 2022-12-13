@@ -87,8 +87,6 @@ jobs:
             ${{ secrets.DOCKER_DEMO_KEY }}
 
       - name: Create Git & SSH Config Dir
-        env:
-          CONFIG_DIR: root-config
         id: config-dir
         run: |
           mkdir root-config
