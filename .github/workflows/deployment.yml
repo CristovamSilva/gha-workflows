@@ -30,7 +30,12 @@ jobs:
         uses: docker/setup-Buildx-action@v2
         id: buildx
 
-      - name: Build and Push
+      - name: Build and Push Image
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: gha-test-repo
+          IMAGE_TAG: ${{ github.sha }}
         uses: docker/build-push-action@v3
         with:
           builder: ${{ steps.buildx.outputs.name }}
@@ -39,5 +44,27 @@ jobs:
           # ssh: default=${{ env.SSH_AUTH_SOCK }}
           context: ./Project-Template
           file: ./Project-Template/Dockerfile
-          tags: 306094223949.dkr.ecr.us-east-1.amazonaws.com/gha-test-repo:${{ github.sha }}
+          tags: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           push: True
+
+      - name: Download task definition
+        env:
+          TASK_DEFINITION: template-task
+        run: |
+          aws ecs describe-task-definition --task-definition $TASK_DEFINITION --query taskDefinition > task-definition.json
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: template
+          image: ${{ steps.build-image.outputs.imageid }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: template-service
+          cluster: default
+          wait-for-service-stability: false
