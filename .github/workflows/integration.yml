@@ -6,18 +6,15 @@ on:
     types: [opened, synchronize, reopened]
     branches: [main]
 
-env:
-  APP: ./Project-Template
-  MODULE: ./Project-Template
-  SETUP_SSH: false
-
 jobs:
   Config:
     runs-on: ubuntu-latest
+    env:
+      APP: ./Project-Template
+      MODULE: ./Project-Template
     outputs:
       app-directory: ${{ steps.app-dir.outputs.dir }}
       module-directory: ${{ steps.module-dir.outputs.dir }}
-      ssh: false
     steps:
       - name: Set Dependencies Directory
         id: app-dir
@@ -42,7 +39,9 @@ jobs:
         uses: ./.github/actions/ssh
         with:
           app-directory: ${{ needs.Config.outputs.app-directory }}
-          deploy-keys: ""
+          deploy-keys: |
+            ${{ secrets.GHA_WF_KEY }}
+            ${{ secrets.DOCKER_DEMO_KEY }}
 
   Quality:
     needs: [Config, Build]
