@@ -86,16 +86,17 @@ jobs:
             ${{ secrets.GHA_WF_KEY }}
             ${{ secrets.DOCKER_DEMO_KEY }}
 
-      - name: Prepare git and ssh config for build context
+      - name: Create Git & SSH Config Dir
         env:
           CONFIG_DIR: root-config
         id: config-dir
         run: |
-          mkdir ${{ needs.Config.outputs.app-context }}/$CONFIG_DIR
-          cp -r ~/.gitconfig ~/.ssh ${{ needs.Config.outputs.app-context }}/$CONFIG_DIR/
+          mkdir $CONFIG_DIR
+          cp -r ~/.gitconfig ~/.ssh ${CONFIG_DIR}/
           echo dir=$CONFIG_DIR >> GITHUB_OUTPUT
+        working-directory: ${{ needs.Config.outputs.app-context }}
 
-      - name: Build and Push Image
+      - name: Build & Push Image
         id: build-image
         uses: docker/build-push-action@v3
         with:
