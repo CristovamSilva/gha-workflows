@@ -17,6 +17,7 @@ jobs:
     outputs:
       app-directory: ${{ steps.app-dir.outputs.dir }}
       module-directory: ${{ steps.module-dir.outputs.dir }}
+      ssh: false
     steps:
       - name: Set Dependencies Directory
         id: app-dir
@@ -37,7 +38,7 @@ jobs:
           app-directory: ${{ needs.Config.outputs.app-directory }}
 
       - name: Setup Deploy Keys
-        if: $SETUP_SSH
+        if: ${{ needs.Config.outputs.ssh }}
         uses: ./.github/actions/ssh
         with:
           app-directory: ${{ needs.Config.outputs.app-directory }}
