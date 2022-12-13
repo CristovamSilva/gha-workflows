@@ -34,7 +34,7 @@ runs:
         ssh-private-key: ${{ inputs.deploy-keys }}
 
     - name: Prepare git and ssh config for build context
-      if: make-config-dir
+      if: inputs.make-config-dir
       env:
         CONFIG_DIR: ./root-config
       id: config-dir
