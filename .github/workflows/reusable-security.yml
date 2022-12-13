@@ -1,16 +1,6 @@
 name: Reusable Security
 on:
   workflow_call:
-    secrets:
-      SONAR_TOKEN:
-        description: sonarcloud token
-        required: false
-      SONARQUBE_TOKEN:
-        description: sonarqube token
-        required: false
-      SONARQUBE_HOST:
-        description: sonarcloud host
-        required: false
     inputs:
       app-directory:
         description: What folder to search for requirements
