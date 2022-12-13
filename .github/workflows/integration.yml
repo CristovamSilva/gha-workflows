@@ -35,7 +35,6 @@ jobs:
           app-directory: ${{ needs.Config.outputs.app-directory }}
 
       - name: Setup Deploy Keys
-        if: ${{ needs.Config.outputs.ssh }}
         uses: ./.github/actions/ssh
         with:
           app-directory: ${{ needs.Config.outputs.app-directory }}
