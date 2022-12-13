@@ -36,7 +36,7 @@ runs:
     - name: Prepare git and ssh config for build context
       if: inputs.make-config-dir
       env:
-        CONFIG_DIR: ./root-config
+        CONFIG_DIR: root-config
       id: config-dir
       run: |
         mkdir ./$CONFIG_DIR
