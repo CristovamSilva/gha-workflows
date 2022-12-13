@@ -9,6 +9,7 @@ jobs:
   Config:
     runs-on: ubuntu-latest
     env:
+      ROLE-ARN: arn:aws:iam::306094223949:role/gha-template-role
       CONTEXT: ./Project-Template
       ECR_REPOSITORY: gha-test-repo
       IMAGE_TAG: ${{ github.sha }}
@@ -16,9 +17,8 @@ jobs:
       TASK_DEFINITION: template-task
       SERVICE: template-service
       CLUSTER: default
-      ROLE-ARN: arn:aws:iam::306094223949:role/gha-template-role
     outputs:
-      iam-role: ${{ steps.iam-role.outputs.role-arn }}
+      iam-role: ${{ steps.iam-role.outputs.role }}
       app-context: ${{ steps.context.outputs.context }}
       tag: ${{ steps.image-tag.outputs.tag }}
       container: ${{ steps.container.outputs.container }}
@@ -28,7 +28,7 @@ jobs:
     steps:
       - name: Set IAM Role
         id: iam-role
-        run: echo role-arn=$ROLE-ARN >> $GITHUB_OUTPUT
+        run: echo role=$ROLE-ARN >> $GITHUB_OUTPUT
 
       - name: Set Context Directory
         id: context
@@ -101,7 +101,7 @@ jobs:
           container-name: ${{ needs.Config.outputs.container }}
           image: ${{ steps.build-image.outputs.imageid }}
 
-      - name: Deploy Task Definitions
+      - name: Deploy Task Definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
