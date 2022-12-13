@@ -94,6 +94,10 @@ jobs:
           echo dir='root-config' >> GITHUB_OUTPUT
         working-directory: ${{ needs.Config.outputs.app-context }}
 
+      - name: List Dir
+        run: ls -la
+        working-directory: ${{ needs.Config.outputs.app-context }}
+
       - name: Build & Push Image
         id: build-image
         uses: docker/build-push-action@v3
