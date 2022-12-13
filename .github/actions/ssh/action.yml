@@ -1,10 +1,10 @@
 name: "Setup SSH Agent"
 
-description: "Setup SSH deploy keys from other repositories"
+description: "Setup deploy keys from other repositories"
 
 inputs:
   app-directory:
-    description: What folder to save keys to
+    description: What folder to save keys to.
     required: false
     default: "."
     type: string
@@ -13,6 +13,10 @@ inputs:
     description: ssh deploy keys
     required: true
     type: string
+outputs:
+  config-directory:
+    description: Directory with ssh and git config
+    value: ${{ steps.config-dir.dir }}
 
 runs:
   using: "composite"
@@ -21,8 +25,15 @@ runs:
       uses: webfactory/ssh-agent@v0.7.0
       with:
         ssh-private-key: ${{ inputs.deploy-keys }}
+      shell: bash
 
     - name: Prepare git and ssh config for build context
+      env:
+        CONFIG_DIR: ./root-config
+      id: config-dir
       run: |
-        mkdir ${{ input.app-directory }}/root-config
-        cp -r ~/.gitconfig ~/.ssh ${{ input.app-directory }}/root-config/
+        mkdir .$CONFIG_DIR
+        cp -r ~/.gitconfig ~/.ssh .$CONFIG_DIR/
+        echo dir=$CONFIG_DIR >> GITHUB_OUTPUT
+      shell: bash
+      working-directory: ${{ input.app-directory }}
