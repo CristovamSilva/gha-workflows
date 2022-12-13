@@ -80,14 +80,20 @@ jobs:
         id: buildx
 
       - name: Setup Deploy Keys
-        id: ssh
-        uses: ./.github/actions/ssh
+        uses: webfactory/ssh-agent@v0.7.0
         with:
-          app-directory: ${{ needs.Config.outputs.app-directory }}
-          make-config-dir: true
-          deploy-keys: |
+          ssh-private-key: |
             ${{ secrets.GHA_WF_KEY }}
             ${{ secrets.DOCKER_DEMO_KEY }}
+
+      - name: Prepare git and ssh config for build context
+        env:
+          CONFIG_DIR: root-config
+        id: config-dir
+        run: |
+          mkdir ./$CONFIG_DIR
+          cp -r ~/.gitconfig ~/.ssh ./$CONFIG_DIR/
+          echo dir=$CONFIG_DIR >> GITHUB_OUTPUT
 
       - name: Build and Push Image
         id: build-image

@@ -29,13 +29,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
       - name: Setup Deploy Keys
-        uses: ./.github/actions/ssh
+        uses: webfactory/ssh-agent@v0.7.0
         with:
-          app-directory: ${{ needs.Config.outputs.app-directory }}
-          deploy-keys: |
+          ssh-private-key: |
             ${{ secrets.GHA_WF_KEY }}
             ${{ secrets.DOCKER_DEMO_KEY }}
 
