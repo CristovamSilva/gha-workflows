@@ -12,10 +12,24 @@ jobs:
       CONTEXT: ./Project-Template
       ECR_REPOSITORY: gha-test-repo
       IMAGE_TAG: ${{ github.sha }}
+      CONTAINER: template
+      TASK_DEFINITION: template-task
+      SERVICE: template-service
+      CLUSTER: default
+      ROLE-ARN: arn:aws:iam::306094223949:role/gha-template-role
     outputs:
+      iam-role: ${{ steps.iam-role.outputs.role-arn }}
       app-context: ${{ steps.context.outputs.context }}
       tag: ${{ steps.image-tag.outputs.tag }}
+      container: ${{ steps.container.outputs.container }}
+      task-definition: ${{ steps.task-def.outputs.task-def }}
+      service: ${{ steps.service.outputs.service }}
+      cluster: ${{ steps.cluster.outputs.cluster }}
     steps:
+      - name: Set IAM Role
+        id: iam-role
+        run: echo role-arn=$ROLE-ARN >> $GITHUB_OUTPUT
+
       - name: Set Context Directory
         id: context
         run: echo context=$CONTEXT >> $GITHUB_OUTPUT
@@ -23,6 +37,22 @@ jobs:
       - name: Set Image Tag
         id: image-tag
         run: echo tag=$ECR_REPOSITORY:$IMAGE_TAG >> $GITHUB_OUTPUT
+
+      - name: Set Task Definition Family
+        id: task-def
+        run: echo task-def=$TASK_DEFINITION >> $GITHUB_OUTPUT
+
+      - name: Set Contaienr
+        id: container
+        run: echo container=$CONTAINER >> $GITHUB_OUTPUT
+
+      - name: Set Service
+        id: service
+        run: echo service=$SERVICE >> $GITHUB_OUTPUT
+
+      - name: Set Cluster
+        id: cluster
+        run: echo cluster=$CLUSTER >> $GITHUB_OUTPUT
 
   Deploy:
     needs: [Config]
@@ -37,7 +67,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@master
         with:
-          role-to-assume: arn:aws:iam::306094223949:role/gha-template-role
+          role-to-assume: ${{ needs.Config.outputs.iam-role }}
           role-session-name: templatesession
           aws-region: us-east-1
 
@@ -60,23 +90,21 @@ jobs:
           push: True
 
       - name: Download Task Definition
-        env:
-          TASK_DEFINITION: template-task
         run: |
-          aws ecs describe-task-definition --task-definition $TASK_DEFINITION --query taskDefinition > task-definition.json
+          aws ecs describe-task-definition --task-definition ${{ needs.Config.outputs.task-definition }} --query taskDefinition > task-definition.json
 
       - name: Update Task Definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: task-definition.json
-          container-name: template
+          container-name: ${{ needs.Config.outputs.container }}
           image: ${{ steps.build-image.outputs.imageid }}
 
       - name: Deploy Task Definitions
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: template-service
-          cluster: default
+          service: ${{ needs.Config.outputs.service }}
+          cluster: ${{ needs.Config.outputs.cluster }}
           wait-for-service-stability: false
