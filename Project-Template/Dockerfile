@@ -15,6 +15,9 @@ ssh-keyscan -H github.com >> /root/.ssh/known_hosts
 rm -rf /var/lib/apt/lists/*
 eot
 
+# COPY root-config /root/
+# RUN sed 's|/home/runner|/root|g' -i.bak /root/.ssh/config
+
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 

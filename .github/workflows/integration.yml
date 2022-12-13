@@ -9,6 +9,7 @@ on:
 env:
   APP: ./Project-Template
   MODULE: ./Project-Template
+  SETUP_SSH: false
 
 jobs:
   Config:
@@ -34,6 +35,13 @@ jobs:
         uses: cristovamsilva/python-dependencies-action@v1
         with:
           app-directory: ${{ needs.Config.outputs.app-directory }}
+
+      - name: Setup Deploy Keys
+        if: $SETUP_SSH
+        uses: ./.github/actions/ssh
+        with:
+          app-directory: ${{ needs.Config.outputs.app-directory }}
+          deploy-keys: ""
 
   Quality:
     needs: [Config, Build]

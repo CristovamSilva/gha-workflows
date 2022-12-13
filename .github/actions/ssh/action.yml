@@ -1,10 +1,10 @@
-name: "Cache Dependencies"
+name: "Setup SSH Agent"
 
-description: "Setup Python with pip Cache and Install Dependencies"
+description: "Setup SSH deploy keys from other repositories"
 
 inputs:
   app-directory:
-    description: What folder to search for requirements
+    description: What folder to save keys to
     required: false
     default: "."
     type: string
@@ -18,7 +18,6 @@ runs:
   using: "composite"
   steps:
     - name: Set SSH agent
-      if: inputs.ssh
       uses: webfactory/ssh-agent@v0.7.0
       with:
         ssh-private-key: ${{ inputs.deploy-keys }}
