@@ -54,7 +54,7 @@ jobs:
     with:
       app-directory: ${{ needs.Config.outputs.app-directory }}
       module-directory: ${{ needs.Config.outputs.module-directory }}
-      # dependency-review: true
+      dependency-review: true
 
   Test:
     needs: [Config, Build]
