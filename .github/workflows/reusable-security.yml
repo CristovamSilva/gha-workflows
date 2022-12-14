@@ -15,11 +15,6 @@ on:
         required: false
         default: true
         type: boolean
-      scan-with-sonarcloud:
-        description: Whether to scan with Sonar Cloud.
-        required: false
-        default: false
-        type: boolean
       dependency-review:
         description: Verify problems with dependencies.
         required: false
@@ -39,31 +34,6 @@ jobs:
       - name: Verify with Bandit
         continue-on-error: true
         run: bandit -r ${{ inputs.module-directory }}
-
-  SonarCloud:
-    runs-on: ubuntu-latest
-    if: inputs.scan-with-sonarcloud
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        # with:
-        # projectBaseDir: my-custom-directory
-        # args: >
-        #   -Dsonar.organization=my-organization
-        #   -Dsonar.projectKey=my-projectkey
-        #   -Dsonar.python.coverage.reportPaths=coverage.xml
-        #   -Dsonar.sources=lib/
-        #   -Dsonar.test.exclusions=tests/**
-        #   -Dsonar.tests=tests/
-        #   -Dsonar.verbose=true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   Dependency-Review:
     runs-on: ubuntu-latest
