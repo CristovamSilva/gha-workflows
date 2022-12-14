@@ -6,10 +6,10 @@ class MemoryDB:
         self.db = dict()
 
     def create(self, object):
-        id = str(uuid4())
-        self.db[id] = object
+        oid = str(uuoid4())
+        self.db[oid] = object
         print(self.db)
-        return {"id": id}
+        return {"id": oid}
 
     def read(self, filter):
         return self.db[filter]

@@ -1,4 +1,4 @@
-name: Integration-Sonar
+name: Integration Workflow using SonarCloud
 on:
   workflow_dispatch:
   # push:

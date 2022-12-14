@@ -9,14 +9,14 @@ router = APIRouter(prefix="/database")
 
 @router.post("/create", status_code=HTTPStatus.CREATED)
 async def register(object):
-    id = await create(object)
-    return {"id": id}
+    oid = await create(object)
+    return {"id": oid}
 
 
 @router.get("/read", status_code=HTTPStatus.OK)
 async def fetch(filter):
-    object = await read(filter)
-    return {"message": object}
+    obj = await read(filter)
+    return {"message": obj}
 
 
 @router.post("/update", status_code=HTTPStatus.OK)
