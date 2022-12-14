@@ -21,7 +21,7 @@ on:
         default: false
         type: boolean
       dependency-review:
-        description: Verify problems with dependencies
+        description: Verify problems with dependencies.
         required: false
         default: false
         type: boolean
