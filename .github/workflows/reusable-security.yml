@@ -14,7 +14,7 @@ on:
         description: Whether to scan with Bandit.
         required: false
         default: true
-        type: boolean        
+        type: boolean
       scan-with-sonarcloud:
         description: Whether to scan with Sonar Cloud.
         required: false
@@ -40,7 +40,7 @@ jobs:
         continue-on-error: true
         run: bandit -r ${{ inputs.module-directory }}
 
-  SonarCloud
+  SonarCloud:
     runs-on: ubuntu-latest
     if: inputs.scan-with-sonarcloud
     steps:
