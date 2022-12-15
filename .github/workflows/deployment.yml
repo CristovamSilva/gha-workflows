@@ -3,7 +3,7 @@ name: Deployment Workflow
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [$default-branch]
 
 jobs:
   Config:
