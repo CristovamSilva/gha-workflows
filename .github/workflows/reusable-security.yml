@@ -37,9 +37,8 @@ jobs:
 
   Dependency-Review:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
     continue-on-error: true
-    if: inputs.dependency-review
+    if: github.event_name == 'pull_request' && inputs.dependency-review
     steps:
       - name: "Checkout Repository"
         uses: actions/checkout@v3
