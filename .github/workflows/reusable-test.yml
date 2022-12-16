@@ -3,21 +3,30 @@ on:
   workflow_call:
     inputs:
       app-directory:
-        description: What folder to search for requirements
+        description: What folder to search for requirements.
         required: true
         type: string
       module-directory:
         description: What folder to analyze.
         required: true
         type: string
-
-defaults:
-  run:
-    working-directory: ${{ inputs.app-directory }}
+      exec-report:
+        description: Where to save execution results.
+        required: false
+        default: exec-report.xml
+        type: string
+      cov-report:
+        description: Where to save coverage results.
+        required: false
+        default: coverage.xml
+        type: string
 
 jobs:
-  TestAndCoverage:
+  Test:
     runs-on: ubuntu-latest
+    env:
+      COV_RESULTS_ART: pytest-cov-results
+      EXC_RESULTS_ART: pytest-exec-results
     steps:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@v1
@@ -26,17 +35,25 @@ jobs:
 
       - name: Test Module
         continue-on-error: true
-        run: pytest ${{ inputs.module-directory }} --cov=${{ inputs.module-directory }} --cov-report=xml --junitxml=./reports.xml
+        run: |
+          pytest ${{ inputs.module-directory }} --cov=${{ inputs.module-directory }} --cov-report xml:${{ inputs.cov-report }} --junitxml=${{ inputs.exec-report }}
+        working-directory: ${{ inputs.app-directory }}
 
-      - name: Check Dir
-        run: pwd
+      - name: Upload pytest execution results
+        uses: actions/upload-artifact@v3
+        with:
+          name: $EXC_RESULTS_ART
+          path: ${{ inputs.exec-report }}
+        working-directory: ${{ inputs.app-directory }}
 
-      - name: List Dir
-        run: ls -la
+      - name: Upload pytest coverage results
+        uses: actions/upload-artifact@v3
+        with:
+          name: $COV_RESULTS_ART
+          path: ${{ inputs.cov-report }}
+        working-directory: ${{ inputs.app-directory }}
 
-      # - name: Upload pytest test results
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: pytest-results
-      #     path: junit/test-results.xml
-      #   if: ${{ always() }}
+      - name: Set Artifcats Key Outputs
+        run: |
+          echo cov-artifact=$COV_RESULTS_ART >> GITHUB_OUTPUT
+          echo exc-artifact=$EXC_RESULTS_ART >> GITHUB_OUTPUT

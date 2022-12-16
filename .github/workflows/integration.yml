@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APP: ./Project-Template
-      MODULE: ./Project-Template
+      MODULE: .
     outputs:
       app-directory: ${{ steps.app-dir.outputs.dir }}
       module-directory: ${{ steps.module-dir.outputs.dir }}
@@ -41,21 +41,21 @@ jobs:
         with:
           app-directory: ${{ needs.Config.outputs.app-directory }}
 
-  Quality:
-    needs: [Config, Build]
-    uses: ./.github/workflows/reusable-qa.yml
-    with:
-      app-directory: ${{ needs.Config.outputs.app-directory }}
-      module-directory: ${{ needs.Config.outputs.module-directory }}
+  # Quality:
+  #   needs: [Config, Build]
+  #   uses: ./.github/workflows/reusable-qa.yml
+  #   with:
+  #     app-directory: ${{ needs.Config.outputs.app-directory }}
+  #     module-directory: ${{ needs.Config.outputs.module-directory }}
 
-  Security:
-    needs: [Config, Build]
-    uses: ./.github/workflows/reusable-security.yml
-    secrets: inherit
-    with:
-      app-directory: ${{ needs.Config.outputs.app-directory }}
-      module-directory: ${{ needs.Config.outputs.module-directory }}
-      dependency-review: true
+  # Security:
+  #   needs: [Config, Build]
+  #   uses: ./.github/workflows/reusable-security.yml
+  #   secrets: inherit
+  #   with:
+  #     app-directory: ${{ needs.Config.outputs.app-directory }}
+  #     module-directory: ${{ needs.Config.outputs.module-directory }}
+  #     dependency-review: true
 
   Test:
     needs: [Config, Build]
@@ -63,6 +63,8 @@ jobs:
     with:
       app-directory: ${{ needs.Config.outputs.app-directory }}
       module-directory: ${{ needs.Config.outputs.module-directory }}
+      exec-report: exec-report.xml
+      cov-report: coverage.xml
 
   SonarCloud:
     needs: [Quality, Security, Test]
@@ -73,7 +75,32 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: SonarCloud Scan
+      - name: Download PyTest Execution Report
+        uses: actions/download-artifact@v3
+        with:
+          name: pytest-exec-results
+
+      - name: Download PyTest Coverage Report
+        uses: actions/download-artifact@v3
+        with:
+          name: pytest-cov-results
+
+      # - name: Download Pylint Report
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: pylint-results
+
+      # - name: Download Flake8 Report
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: flake8-results
+
+      # - name: Download Bandit Results
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: bandit-results
+
+      - name: Scan with SonarCloud
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
