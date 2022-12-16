@@ -67,7 +67,8 @@ jobs:
       cov-report: coverage.xml
 
   SonarCloud:
-    needs: [Quality, Security, Test]
+    # needs: [Quality, Security, Test]
+    needs: Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
