@@ -43,15 +43,13 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: $EXC_RESULTS_ART
-          path: ${{ inputs.exec-report }}
-        working-directory: ${{ inputs.app-directory }}
+          path: ${{ inputs.app-directory }}/${{ inputs.exec-report }}
 
       - name: Upload pytest coverage results
         uses: actions/upload-artifact@v3
         with:
           name: $COV_RESULTS_ART
-          path: ${{ inputs.cov-report }}
-        working-directory: ${{ inputs.app-directory }}
+          path: ${{ inputs.app-directory }}/${{ inputs.cov-report }}
 
       - name: Set Artifcats Key Outputs
         run: |
