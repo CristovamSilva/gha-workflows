@@ -36,6 +36,10 @@ on:
         default: true
         type: boolean
 
+defaults:
+  run:
+    working-directory: ${{ inputs.app-directory }}
+
 jobs:
   Sort:
     runs-on: ubuntu-latest

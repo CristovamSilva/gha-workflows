@@ -21,6 +21,10 @@ on:
         default: false
         type: boolean
 
+defaults:
+  run:
+    working-directory: ${{ inputs.app-directory }}
+
 jobs:
   Bandit:
     runs-on: ubuntu-latest
