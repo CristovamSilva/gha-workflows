@@ -88,6 +88,9 @@ jobs:
           name: pytest-cov-results
           path: ./Project-Template/coverage.xml
 
+      - name: Display structure of downloaded files
+        run: ls -R
+
       # - name: Download Pylint Report
       #   uses: actions/download-artifact@v3
       #   with:
