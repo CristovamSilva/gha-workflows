@@ -24,9 +24,6 @@ on:
 jobs:
   Test:
     runs-on: ubuntu-latest
-    env:
-      COV_RESULTS_ART: pytest-cov-results
-      EXC_RESULTS_ART: pytest-exec-results
     steps:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@v1
@@ -35,23 +32,17 @@ jobs:
 
       - name: Test Module
         continue-on-error: true
-        run: |
-          pytest ${{ inputs.module-directory }} --cov=${{ inputs.module-directory }} --cov-report xml:${{ inputs.cov-report }} --junitxml=${{ inputs.exec-report }}
+        run: pytest ${{ inputs.module-directory }} --cov=${{ inputs.module-directory }} --cov-report xml:${{ inputs.cov-report }} --junitxml=${{ inputs.exec-report }}
         working-directory: ${{ inputs.app-directory }}
 
       - name: Upload pytest execution results
         uses: actions/upload-artifact@v3
         with:
-          name: $EXC_RESULTS_ART
+          name: pytest-exec-results
           path: ${{ inputs.app-directory }}/${{ inputs.exec-report }}
 
       - name: Upload pytest coverage results
         uses: actions/upload-artifact@v3
         with:
-          name: $COV_RESULTS_ART
+          name: pytest-cov-results
           path: ${{ inputs.app-directory }}/${{ inputs.cov-report }}
-
-      - name: Set Artifcats Key Outputs
-        run: |
-          echo cov-artifact=$COV_RESULTS_ART >> GITHUB_OUTPUT
-          echo exc-artifact=$EXC_RESULTS_ART >> GITHUB_OUTPUT
