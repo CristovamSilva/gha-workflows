@@ -63,7 +63,7 @@ jobs:
     with:
       app-directory: ${{ needs.Config.outputs.app-directory }}
       module-directory: ${{ needs.Config.outputs.module-directory }}
-      exec-report: exec-report.xml
+      exec-report: xunit-result.xml
       cov-report: coverage.xml
 
   SonarCloud:
