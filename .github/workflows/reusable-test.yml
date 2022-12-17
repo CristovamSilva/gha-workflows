@@ -46,8 +46,3 @@ jobs:
         with:
           name: pytest-cov-results
           path: ${{ inputs.app-directory }}/${{ inputs.cov-report }}
-
-      - name: Set Artifcats Key Outputs
-        run: |
-          echo cov-artifact="pytest-cov-results" >> GITHUB_OUTPUT
-          echo exc-artifact="pytest-exec-results" >> GITHUB_OUTPUT

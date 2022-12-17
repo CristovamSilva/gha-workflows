@@ -80,31 +80,16 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: pytest-exec-results
-          path: ./Project-Template/
+          path: ./Project-Template/reports
 
       - name: Download PyTest Coverage Report
         uses: actions/download-artifact@v3
         with:
           name: pytest-cov-results
-          path: ./Project-Template/
+          path: ./Project-Template/reports
 
       - name: Display structure of downloaded files
         run: ls -R
-
-      # - name: Download Pylint Report
-      #   uses: actions/download-artifact@v3
-      #   with:
-      #     name: pylint-results
-
-      # - name: Download Flake8 Report
-      #   uses: actions/download-artifact@v3
-      #   with:
-      #     name: flake8-results
-
-      # - name: Download Bandit Results
-      #   uses: actions/download-artifact@v3
-      #   with:
-      #     name: bandit-results
 
       - name: Scan with SonarCloud
         uses: SonarSource/sonarcloud-github-action@master
