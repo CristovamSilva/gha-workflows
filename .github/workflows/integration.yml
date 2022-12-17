@@ -80,13 +80,13 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: pytest-exec-results
-          path: ./Project-Template/exec-report.xml
+          path: ./Project-Template/
 
       - name: Download PyTest Coverage Report
         uses: actions/download-artifact@v3
         with:
           name: pytest-cov-results
-          path: ./Project-Template/coverage.xml
+          path: ./Project-Template/
 
       - name: Display structure of downloaded files
         run: ls -R
