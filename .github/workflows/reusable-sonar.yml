@@ -11,16 +11,21 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Download Reports
-        uses: ./.github/actions/download-reports
-        # with:
-        #   test: true
-        #   coverage: true
-        #   isort: true
-        #   black: true
-        #   mypy: true
-        #   flake8: true
-        #   pylint: true
+      # - name: Download Reports
+      #   uses: ./.github/actions/download-reports
+      #   # with:
+      #   #   test: true
+      #   #   coverage: true
+      #   #   isort: true
+      #   #   black: true
+      #   #   mypy: true
+      #   #   flake8: true
+      #   #   pylint: true
+
+    - name: Download Reports
+      uses: actions/download-artifact@v3
+      with:
+        path: ${{ inputs.report-directory }}
 
       - name: Scan with SonarCloud
         uses: SonarSource/sonarcloud-github-action@master

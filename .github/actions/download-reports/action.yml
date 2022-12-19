@@ -104,9 +104,13 @@ runs:
         path: ${{ inputs.report-directory }}
 
     - name: Download MyPy Report
+      id: mypy
       continue-on-error: true
       if: inputs.mypy
       uses: actions/download-artifact@v3
       with:
         name: mypy-results
         path: ${{ inputs.report-directory }}
+
+    - name: Check Errors
+      if: ${{ failure() && inputs.mypy }}
