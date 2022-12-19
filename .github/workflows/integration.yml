@@ -67,32 +67,5 @@ jobs:
       cov-report: coverage.xml
 
   SonarCloud:
-    # needs: [Quality, Security, Test]
     needs: Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Download PyTest Execution Report
-        uses: actions/download-artifact@v3
-        with:
-          name: pytest-exec-results
-          path: ./reports
-
-      - name: Download PyTest Coverage Report
-        uses: actions/download-artifact@v3
-        with:
-          name: pytest-cov-results
-          path: ./reports
-
-      - name: Display structure of downloaded files
-        run: ls -R
-
-      - name: Scan with SonarCloud
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    uses: ./.github/workflows/reusable-sonar.yml

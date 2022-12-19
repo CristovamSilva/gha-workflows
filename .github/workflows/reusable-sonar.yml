@@ -1,0 +1,29 @@
+name: Reusable SonarCloud
+on:
+  workflow_call:
+
+jobs:
+  SonarCloud:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Download Reports
+        uses: ./.github/actions/download-reports
+        # with:
+        #   test: true
+        #   coverage: true
+        #   isort: true
+        #   black: true
+        #   mypy: true
+        #   flake8: true
+        #   pylint: true
+
+      - name: Scan with SonarCloud
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
