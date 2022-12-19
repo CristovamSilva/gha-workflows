@@ -15,6 +15,11 @@ on:
         required: false
         default: true
         type: boolean
+      bandit-report:
+        description: Where to save coverage results.
+        required: false
+        default: bandit.xml
+        type: string
       dependency-review:
         description: Verify problems with dependencies.
         required: false
@@ -33,7 +38,14 @@ jobs:
 
       - name: Verify with Bandit
         continue-on-error: true
-        run: bandit -r ${{ inputs.module-directory }}
+        run: bandit -r ${{ inputs.module-directory }} -f xml -o ${{ inputs.bandit-report }}
+        working-directory: ${{ inputs.app-directory }}
+
+      - name: Upload Bandit results
+        uses: actions/upload-artifact@v3
+        with:
+          name: pytest-exec-results
+          path: ${{ inputs.app-directory }}/${{ inputs.bandit-report }}
 
   Dependency-Review:
     runs-on: ubuntu-latest
@@ -46,4 +58,5 @@ jobs:
       - name: Dependency Review
         uses: actions/dependency-review-action@v3
         with:
+          license-check: false
           config-file: "./.github/dependency-review-config.yml"

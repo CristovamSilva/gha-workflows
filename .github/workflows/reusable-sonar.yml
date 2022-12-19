@@ -21,14 +21,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      # - name: Download Reports
-      #   uses: ./.github/actions/download-reports
-      #   # with:
-      #   #   test: true
-      #   #   coverage: true
-      #   #   isort: true
-      #   #   black: true
-      #   #   mypy: true
-      #   #   flake8: true
-      #   #   pylint: true
