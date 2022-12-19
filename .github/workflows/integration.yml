@@ -68,4 +68,5 @@ jobs:
     uses: ./.github/workflows/reusable-sonar.yml
     with:
       cov-report: ${{ needs.Test.outputs.coverage_report_path }}
+      exec-report: ${{ needs.Test.outputs.execution_report_path }}
     secrets: inherit

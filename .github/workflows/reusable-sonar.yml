@@ -27,6 +27,7 @@ on:
         required: false
         default: flake8.xml
         type: string
+
 jobs:
   SonarCloud:
     runs-on: ubuntu-latest
@@ -42,10 +43,6 @@ jobs:
         with:
           path: reports
 
-      - name: Display structure of downloaded files
-        run: ls -R
-        working-directory: ${{steps.download.outputs.download-path}}
-
       - name: Scan with SonarCloud
         uses: SonarSource/sonarcloud-github-action@master
         env:
@@ -54,6 +51,7 @@ jobs:
         with:
           args: >
             -Dsonar.python.coverage.reportPaths=reports/${{ inputs.cov-report }}
+            -Dsonar.python.xunit.reportPath=reports/${{ inputs.exec-report }}
             -Dsonar.sources=Project-Template/
             -Dsonar.verbose=true
           # projectBaseDir: my-custom-directory
