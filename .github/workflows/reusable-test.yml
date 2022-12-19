@@ -32,7 +32,7 @@ jobs:
 
       - name: Test Module
         continue-on-error: true
-        run: pytest --cov --cov-report xml --junitxml=${{ inputs.exec-report }}
+        run: pytest --cov=${{ inputs.module-directory }} --cov-report xml --junitxml=${{ inputs.exec-report }}
         working-directory: ${{ inputs.app-directory }}
 
       - name: Upload pytest execution results
