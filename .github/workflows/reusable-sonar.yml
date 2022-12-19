@@ -15,7 +15,7 @@ jobs:
         id: download
         uses: actions/download-artifact@v3
         with:
-          path: reports
+          path: /reports
 
       - name: Display structure of downloaded files
         run: echo ${{steps.download.outputs.download-path}}

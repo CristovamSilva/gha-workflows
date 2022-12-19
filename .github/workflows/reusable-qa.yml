@@ -71,7 +71,7 @@ jobs:
         with:
           app-directory: ${{ inputs.app-directory }}
 
-      - name: Format using Black
+      - name: Format using MyPy
         continue-on-error: true
         if: inputs.StaticTypeCheck
         run: mypy ${{ inputs.module-directory }}
