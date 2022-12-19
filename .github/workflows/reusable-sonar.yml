@@ -16,11 +16,11 @@ jobs:
         with:
           path: ${{ inputs.report-directory }}
 
-        - name: Scan with SonarCloud
-          uses: SonarSource/sonarcloud-github-action@master
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Scan with SonarCloud
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       # - name: Download Reports
       #   uses: ./.github/actions/download-reports
