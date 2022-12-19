@@ -41,20 +41,20 @@ jobs:
         with:
           app-directory: ${{ needs.Config.outputs.app-directory }}
 
-  Quality:
-    needs: [Config, Build]
-    uses: ./.github/workflows/reusable-qa.yml
-    with:
-      app-directory: ${{ needs.Config.outputs.app-directory }}
-      module-directory: ${{ needs.Config.outputs.module-directory }}
+  # Quality:
+  #   needs: [Config, Build]
+  #   uses: ./.github/workflows/reusable-qa.yml
+  #   with:
+  #     app-directory: ${{ needs.Config.outputs.app-directory }}
+  #     module-directory: ${{ needs.Config.outputs.module-directory }}
 
-  Security:
-    needs: [Config, Build]
-    uses: ./.github/workflows/reusable-security.yml
-    secrets: inherit
-    with:
-      app-directory: ${{ needs.Config.outputs.app-directory }}
-      module-directory: ${{ needs.Config.outputs.module-directory }}
+  # Security:
+  #   needs: [Config, Build]
+  #   uses: ./.github/workflows/reusable-security.yml
+  #   secrets: inherit
+  #   with:
+  #     app-directory: ${{ needs.Config.outputs.app-directory }}
+  #     module-directory: ${{ needs.Config.outputs.module-directory }}
 
   Test:
     needs: [Config, Build]
@@ -66,6 +66,8 @@ jobs:
       cov-report: coverage.xml
 
   SonarCloud:
-    needs: [Quality, Security, Test]
+    needs: [Test] #Quality, Security
     uses: ./.github/workflows/reusable-sonar.yml
+    with:
+      cov-report: pytest-cov-results/coverage.xml
     secrets: inherit
