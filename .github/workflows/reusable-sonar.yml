@@ -12,9 +12,13 @@ jobs:
           fetch-depth: 0
 
       - name: Download Reports
+        id: download
         uses: actions/download-artifact@v3
         with:
           path: reports
+
+      - name: Display structure of downloaded files
+        run: echo ${{steps.download.outputs.download-path}}
 
       - name: Scan with SonarCloud
         uses: SonarSource/sonarcloud-github-action@master
