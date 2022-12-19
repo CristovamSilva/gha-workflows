@@ -69,3 +69,4 @@ jobs:
   SonarCloud:
     needs: Test
     uses: ./.github/workflows/reusable-sonar.yml
+    secrets: inherit
