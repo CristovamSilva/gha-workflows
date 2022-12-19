@@ -62,12 +62,10 @@ jobs:
     with:
       app-directory: ${{ needs.Config.outputs.app-directory }}
       module-directory: ${{ needs.Config.outputs.module-directory }}
-      exec-report: xunit-result.xml
-      cov-report: coverage.xml
 
   SonarCloud:
     needs: [Test] #Quality, Security
     uses: ./.github/workflows/reusable-sonar.yml
     with:
-      cov-report: pytest-cov-results/coverage.xml
+      cov-report: ${{ needs.Test.outputs.coverage_report_path }}
     secrets: inherit

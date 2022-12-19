@@ -10,7 +10,7 @@ on:
       cov-report:
         description: Where to retrieve pytest coverage results.
         required: false
-        default: coverage.xml
+        default: pytest-cov-results/coverage.xml
         type: string
       bandit-report:
         description: Where to retrieve bandit results.
