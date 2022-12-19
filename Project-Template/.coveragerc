@@ -1,4 +1,11 @@
-[coverage:run]
+[run]
 relative_files = True
-source = .
 branch = True
+include = 
+    tests/*
+
+[report]
+skip_covered = True
+
+[xml]
+output = coverage.xml
