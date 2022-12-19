@@ -14,7 +14,7 @@ jobs:
       - name: Download Reports
         uses: actions/download-artifact@v3
         with:
-          path: ./reports
+          path: reports
 
       - name: Scan with SonarCloud
         uses: SonarSource/sonarcloud-github-action@master

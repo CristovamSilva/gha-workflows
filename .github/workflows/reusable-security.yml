@@ -44,7 +44,7 @@ jobs:
       - name: Upload Bandit results
         uses: actions/upload-artifact@v3
         with:
-          name: pytest-exec-results
+          name: bandit-results
           path: ${{ inputs.app-directory }}/${{ inputs.bandit-report }}
 
   Dependency-Review:
