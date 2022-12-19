@@ -11,14 +11,14 @@ on:
         required: true
         type: string
 
-outputs:
-  coverage_report_path:
-    description: "Pytest Coverage Report Path"
-    value: ${{ jobs.Test.outputs.coverage }}
+    outputs:
+      coverage_report_path:
+        description: "Pytest Coverage Report Path"
+        value: ${{ jobs.Test.outputs.coverage }}
 
-  execution_report_path:
-    description: "Pytest Execution Report Path"
-    value: ${{ jobs.Test.outputs.execution }}
+      execution_report_path:
+        description: "Pytest Execution Report Path"
+        value: ${{ jobs.Test.outputs.execution }}
 
 jobs:
   Test:
