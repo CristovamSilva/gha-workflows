@@ -12,13 +12,17 @@ on:
         type: string
 
 outputs:
-  coverage_report_path: ${{ jobs.Test.outputs.coverage }}
-  execution_report_path: ${{ jobs.Test.outputs.execution }}
+  coverage_report_path:
+    description: "Pytest Coverage Report Path"
+    value: ${{ jobs.Test.outputs.coverage }}
+
+  execution_report_path:
+    description: "Pytest Execution Report Path"
+    value: ${{ jobs.Test.outputs.execution }}
+
 jobs:
   Test:
     runs-on: ubuntu-latest
-    env:
-
     outputs:
       coverage: pytest-cov-results/coverage.xml
       execution: pytest-exec-results/xunit-result.xml
