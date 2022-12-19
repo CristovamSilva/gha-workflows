@@ -23,7 +23,7 @@ on:
       dependency-review:
         description: Verify problems with dependencies.
         required: false
-        default: false
+        default: true
         type: boolean
 
 jobs:
