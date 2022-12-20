@@ -5,7 +5,7 @@ on:
       exec-report:
         description: Where to retrieve pytest execution results.
         required: false
-        default: exec-report.xml
+        default: pytest-exec-results/exec-report.xml
         type: string
       cov-report:
         description: Where to retrieve pytest coverage results.
