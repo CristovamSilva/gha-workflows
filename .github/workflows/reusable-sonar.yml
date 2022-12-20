@@ -56,4 +56,4 @@ jobs:
           args: >
             -Dsonar.python.coverage.reportPaths=reports/${{ inputs.cov-report }}
             -Dsonar.python.xunit.reportPath=reports/${{ inputs.exec-report }}
-            -Dsonar.sources=${{inputs.source-directory}}
+            -Dsonar.sources=${{ inputs.source-directory }}
