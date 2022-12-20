@@ -47,6 +47,10 @@ jobs:
         with:
           path: reports
 
+      - name: Display structure of downloaded files
+        run: ls -R
+        shell: bash
+
       - name: Scan with SonarCloud
         uses: SonarSource/sonarcloud-github-action@master
         env:
