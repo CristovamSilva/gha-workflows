@@ -133,7 +133,7 @@ jobs:
       - name: Lint with pylint
         continue-on-error: true
         if: inputs.pylint
-        run: pylint ${{ inputs.module-directory }} --output-format=parseable >> pyliny.xml
+        run: pylint ${{ inputs.module-directory }} --output-format=parseable >> pylint.xml
         working-directory: ${{ inputs.app-directory }}
 
       - name: Upload Black results
