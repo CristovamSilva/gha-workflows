@@ -2,7 +2,11 @@ name: Reusable Test
 on:
   workflow_call:
     inputs:
-      app-directory:
+      deps-directory:
+        description: What folder to search for requirements.
+        required: true
+        type: string
+      source-directory:
         description: What folder to search for requirements.
         required: true
         type: string
@@ -29,21 +33,21 @@ jobs:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@v1
         with:
-          app-directory: ${{ inputs.app-directory }}
+          app-directory: ${{ inputs.deps-directory }}
 
       - name: Test Module
         continue-on-error: true
         run: pytest ${{ inputs.module-directory }} --cov=${{ inputs.module-directory }} --cov-report xml --junitxml=xunit-result.xml
-        working-directory: ${{ inputs.app-directory }}
+        working-directory: ${{ inputs.source-directory }}
 
       - name: Upload pytest execution results
         uses: actions/upload-artifact@v3
         with:
           name: pytest-exec-results
-          path: ${{ inputs.app-directory }}/xunit-result.xml
+          path: ${{ inputs.source-directory }}/xunit-result.xml
 
       - name: Upload pytest coverage results
         uses: actions/upload-artifact@v3
         with:
           name: pytest-cov-results
-          path: ${{ inputs.app-directory }}/coverage.xml
+          path: ${{ inputs.source-directory }}/coverage.xml

@@ -2,13 +2,14 @@ name: Reusable QA
 on:
   workflow_call:
     inputs:
-      app-directory:
-        description: What folder to search for requirements
+      source-directory:
+        description: Directory containing the source code.
         required: true
         type: string
       module-directory:
-        description: What folder to analyzie
-        required: true
+        description: Directory containing a specific module source code.
+        required: false
+        default: .
         type: string
       sort:
         description: Whether to run isort.
@@ -63,13 +64,13 @@ jobs:
         continue-on-error: true
         if: inputs.sort
         run: isort ${{ inputs.module-directory }} --diff >> sort.xml
-        working-directory: ${{ inputs.app-directory }}
+        working-directory: ${{ inputs.source-directory }}
 
       - name: Upload isort results
         uses: actions/upload-artifact@v3
         with:
           name: sort-results
-          path: ${{ inputs.app-directory }}/sort.xml
+          path: ${{ inputs.source-directory }}/sort.xml
 
   Format:
     runs-on: ubuntu-latest
@@ -80,13 +81,13 @@ jobs:
         continue-on-error: true
         if: inputs.format
         run: black ${{ inputs.module-directory }} --diff --color >> black.xml
-        working-directory: ${{ inputs.app-directory }}
+        working-directory: ${{ inputs.source-directory }}
 
       - name: Upload Black results
         uses: actions/upload-artifact@v3
         with:
           name: black-results
-          path: ${{ inputs.app-directory }}/black.xml
+          path: ${{ inputs.source-directory }}/black.xml
 
   TypeCheck:
     runs-on: ubuntu-latest
@@ -97,13 +98,13 @@ jobs:
         continue-on-error: true
         if: inputs.mypy
         run: mypy ${{ inputs.module-directory }} >> mypy.xml
-        working-directory: ${{ inputs.app-directory }}
+        working-directory: ${{ inputs.source-directory }}
 
       - name: Upload MyPy results
         uses: actions/upload-artifact@v3
         with:
           name: mypy-results
-          path: ${{ inputs.app-directory }}/mypy.xml
+          path: ${{ inputs.source-directory }}/mypy.xml
 
   Pylint:
     runs-on: ubuntu-latest
@@ -114,13 +115,13 @@ jobs:
         continue-on-error: true
         if: inputs.pylint
         run: pylint ${{ inputs.module-directory }} --output-format=parseable >> pylint.xml
-        working-directory: ${{ inputs.app-directory }}
+        working-directory: ${{ inputs.source-directory }}
 
       - name: Upload PyLint results
         uses: actions/upload-artifact@v3
         with:
           name: pylint-results
-          path: ${{ inputs.app-directory }}/pylint.xml
+          path: ${{ inputs.source-directory }}/pylint.xml
 
   Flake8:
     runs-on: ubuntu-latest
@@ -131,10 +132,10 @@ jobs:
         continue-on-error: true
         if: inputs.flake8
         run: flake8 ${{ inputs.module-directory }} --count --exit-zero --select=E9,F63,F7,F82 --show-source --statistics >> flake8.xml
-        working-directory: ${{ inputs.app-directory }}
+        working-directory: ${{ inputs.source-directory }}
 
       - name: Upload Flake8 results
         uses: actions/upload-artifact@v3
         with:
           name: flake8-results
-          path: ${{ inputs.app-directory }}/flake8.xml
+          path: ${{ inputs.source-directory }}/flake8.xml
