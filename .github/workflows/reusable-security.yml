@@ -28,7 +28,7 @@ jobs:
       report_path: bandit-results/bandit.xml
     steps:
       - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@main
+        uses: cristovamsilva/python-dependencies-action@master
         with:
           app-directory: ${{ inputs.deps-directory }}
           sec: true

@@ -66,7 +66,7 @@ jobs:
       report_path: sort-results/sort.xml
     steps:
       - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@main
+        uses: cristovamsilva/python-dependencies-action@master
         with:
           deps-directory: ${{ inputs.deps-directory }}
           qa: true
@@ -89,7 +89,7 @@ jobs:
       report_path: black-results/black.xml
     steps:
       - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@main
+        uses: cristovamsilva/python-dependencies-action@master
         with:
           deps-directory: ${{ inputs.deps-directory }}
           qa: true
@@ -112,7 +112,7 @@ jobs:
       report_path: mypy-results/mypy.xml
     steps:
       - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@main
+        uses: cristovamsilva/python-dependencies-action@master
         with:
           deps-directory: ${{ inputs.deps-directory }}
           qa: true
@@ -135,7 +135,7 @@ jobs:
       report_path: pyliynt-results/pyliynt.xml
     steps:
       - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@main
+        uses: cristovamsilva/python-dependencies-action@master
         with:
           deps-directory: ${{ inputs.deps-directory }}
           qa: true
@@ -158,7 +158,7 @@ jobs:
       report_path: flake8-results/flake8.xml
     steps:
       - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@main
+        uses: cristovamsilva/python-dependencies-action@master
         with:
           deps-directory: ${{ inputs.deps-directory }}
           qa: true

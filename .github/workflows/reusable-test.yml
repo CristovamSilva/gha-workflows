@@ -31,7 +31,7 @@ jobs:
       execution: pytest-exec-results/xunit-result.xml
     steps:
       - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@main
+        uses: cristovamsilva/python-dependencies-action@master
         with:
           app-directory: ${{ inputs.deps-directory }}
           app: true
