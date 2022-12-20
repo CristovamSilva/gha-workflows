@@ -2,6 +2,10 @@ name: Reusable SonarCloud
 on:
   workflow_call:
     inputs:
+      source-directory:
+        description: What folder to analyzie
+        required: true
+        type: string
       exec-report:
         description: Where to retrieve pytest execution results.
         required: false
@@ -52,5 +56,4 @@ jobs:
           args: >
             -Dsonar.python.coverage.reportPaths=reports/${{ inputs.cov-report }}
             -Dsonar.python.xunit.reportPath=reports/${{ inputs.exec-report }}
-            -Dsonar.sources=Project-Template/
-            -Dsonar.verbose=true
+            -Dsonar.sources=${{inputs.source-directory}}
