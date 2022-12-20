@@ -30,7 +30,7 @@ jobs:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@master
         with:
-          app-directory: ${{ inputs.deps-directory }}
+          deps-directory: ${{ inputs.deps-directory }}
           sec: true
 
       - name: Verify with Bandit
