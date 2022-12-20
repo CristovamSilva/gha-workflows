@@ -33,7 +33,7 @@ jobs:
 
       - name: Test Module
         continue-on-error: true
-        run: pytest --cov=${{ inputs.module-directory }} --cov-report xml --junitxml=xunit-result.xml
+        run: pytest ${{ inputs.module-directory }} --cov=${{ inputs.module-directory }} --cov-report xml --junitxml=xunit-result.xml
         working-directory: ${{ inputs.app-directory }}
 
       - name: Upload pytest execution results
