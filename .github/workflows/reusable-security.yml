@@ -10,27 +10,17 @@ on:
         description: What folder to analyzie
         required: true
         type: string
-      bandit:
-        description: Whether to scan with Bandit.
-        required: false
-        default: true
-        type: boolean
-      dependency-review:
-        description: Verify problems with dependencies.
-        required: false
-        default: true
-        type: boolean
+
     outputs:
       bandit_report_path:
-        description: "Pytest Bandit Report Path"
-        value: ${{ jobs.Test.outputs.bandit }}
+        description: "Bandit Report Path"
+        value: ${{ jobs.Bandit.outputs.report_path }}
 
 jobs:
   Bandit:
     runs-on: ubuntu-latest
     outputs:
-      bandit: bandit-results/bandit.xml
-    if: inputs.bandit
+      report_path: bandit-results/bandit.xml
     steps:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@v1
@@ -51,7 +41,7 @@ jobs:
   Dependency-Review:
     runs-on: ubuntu-latest
     continue-on-error: true
-    if: github.event_name == 'pull_request' && inputs.dependency-review
+    if: github.event_name == 'pull_request'
     steps:
       - name: "Checkout Repository"
         uses: actions/checkout@v3

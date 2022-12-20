@@ -20,25 +20,44 @@ on:
         required: false
         default: true
         type: boolean
-      StaticTypeCheck:
+      mypy:
         description: Whether to run black.
         required: false
         default: true
         type: boolean
-      lint-with-flake8:
+      flake8:
         description: Whether to run flake8.
         required: false
         default: true
         type: boolean
-      lint-with-pylint:
+      pylint:
         description: Whether to run pylint.
         required: false
         default: true
         type: boolean
 
+    outputs:
+      flake8_report_path:
+        description: "Flake8 Report Path"
+        value: ${{ jobs.Flake8.outputs.report_path }}
+      pylint_report_path:
+        description: "Pylint Report Path"
+        value: ${{ jobs.Pylint.outputs.report_path }}
+      mypy_report_path:
+        description: "Mypy Report Path"
+        value: ${{ jobs.TypeCheck.outputs.report_path }}
+      black_report_path:
+        description: "Black Report Path"
+        value: ${{ jobs.Format.outputs.report_path }}
+      isort_report_path:
+        description: "iSort Report Path"
+        value: ${{ jobs.Sort.outputs.report_path }}
+
 jobs:
   Sort:
     runs-on: ubuntu-latest
+    outputs:
+      report_path: sort-results/sort.xml
     steps:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@v1
@@ -48,10 +67,19 @@ jobs:
       - name: Sort Imports using isort
         continue-on-error: true
         if: inputs.sort
-        run: isort ${{ inputs.module-directory }} --diff
+        run: isort ${{ inputs.module-directory }} --diff >> sort.xml
+        working-directory: ${{ inputs.app-directory }}
+
+      - name: Upload isort results
+        uses: actions/upload-artifact@v3
+        with:
+          name: sort-results
+          path: ${{ inputs.app-directory }}/sort.xml
 
   Format:
     runs-on: ubuntu-latest
+    outputs:
+      report_path: black-results/black.xml
     steps:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@v1
@@ -61,10 +89,19 @@ jobs:
       - name: Format using Black
         continue-on-error: true
         if: inputs.format
-        run: black ${{ inputs.module-directory }} --diff --color
+        run: black ${{ inputs.module-directory }} --diff --color >> black.xml
+        working-directory: ${{ inputs.app-directory }}
 
-  StaticTypeCheck:
+      - name: Upload Black results
+        uses: actions/upload-artifact@v3
+        with:
+          name: black-results
+          path: ${{ inputs.app-directory }}/black.xml
+
+  TypeCheck:
     runs-on: ubuntu-latest
+    outputs:
+      report_path: mypy-results/mypy.xml
     steps:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@v1
@@ -73,11 +110,20 @@ jobs:
 
       - name: Format using MyPy
         continue-on-error: true
-        if: inputs.StaticTypeCheck
-        run: mypy ${{ inputs.module-directory }}
+        if: inputs.mypy
+        run: mypy ${{ inputs.module-directory }} >> mypy.xml
+        working-directory: ${{ inputs.app-directory }}
 
-  Lint-Pylint:
+      - name: Upload Black results
+        uses: actions/upload-artifact@v3
+        with:
+          name: mypy-results
+          path: ${{ inputs.app-directory }}/mypy.xml
+
+  Pylint:
     runs-on: ubuntu-latest
+    outputs:
+      report_path: pyliynt-results/pyliynt.xml
     steps:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@v1
@@ -86,11 +132,20 @@ jobs:
 
       - name: Lint with pylint
         continue-on-error: true
-        if: inputs.lint-with-pylint
-        run: pylint ${{ inputs.module-directory }} --output-format=parseable
+        if: inputs.pylint
+        run: pylint ${{ inputs.module-directory }} --output-format=parseable >> pyliny.xml
+        working-directory: ${{ inputs.app-directory }}
 
-  Lint-Flake8:
+      - name: Upload Black results
+        uses: actions/upload-artifact@v3
+        with:
+          name: pylint-results
+          path: ${{ inputs.app-directory }}/pylint.xml
+
+  Flake8:
     runs-on: ubuntu-latest
+    outputs:
+      report_path: flake8-results/flake8.xml
     steps:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@v1
@@ -99,5 +154,12 @@ jobs:
 
       - name: Lint with flake8
         continue-on-error: true
-        if: inputs.lint-with-flake8
-        run: flake8 ${{ inputs.module-directory }} --count --exit-zero --select=E9,F63,F7,F82 --show-source --statistics
+        if: inputs.flake8
+        run: flake8 ${{ inputs.module-directory }} --count --exit-zero --select=E9,F63,F7,F82 --show-source --statistics >> flake8.xml
+        working-directory: ${{ inputs.app-directory }}
+
+      - name: Upload Black results
+        uses: actions/upload-artifact@v3
+        with:
+          name: flake8-results
+          path: ${{ inputs.app-directory }}/flake8.xml
