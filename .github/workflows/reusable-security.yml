@@ -22,11 +22,6 @@ jobs:
     outputs:
       report_path: bandit-results/bandit.xml
     steps:
-      - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@v1
-        with:
-          app-directory: ${{ inputs.app-directory }}
-
       - name: Verify with Bandit
         continue-on-error: true
         run: bandit -r ${{ inputs.module-directory }} -f xml -o bandit.xml

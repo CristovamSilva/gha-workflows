@@ -59,11 +59,6 @@ jobs:
     outputs:
       report_path: sort-results/sort.xml
     steps:
-      - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@v1
-        with:
-          app-directory: ${{ inputs.app-directory }}
-
       - name: Sort Imports using isort
         continue-on-error: true
         if: inputs.sort
@@ -81,11 +76,6 @@ jobs:
     outputs:
       report_path: black-results/black.xml
     steps:
-      - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@v1
-        with:
-          app-directory: ${{ inputs.app-directory }}
-
       - name: Format using Black
         continue-on-error: true
         if: inputs.format
@@ -103,18 +93,13 @@ jobs:
     outputs:
       report_path: mypy-results/mypy.xml
     steps:
-      - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@v1
-        with:
-          app-directory: ${{ inputs.app-directory }}
-
       - name: Format using MyPy
         continue-on-error: true
         if: inputs.mypy
         run: mypy ${{ inputs.module-directory }} >> mypy.xml
         working-directory: ${{ inputs.app-directory }}
 
-      - name: Upload Black results
+      - name: Upload MyPy results
         uses: actions/upload-artifact@v3
         with:
           name: mypy-results
@@ -125,18 +110,13 @@ jobs:
     outputs:
       report_path: pyliynt-results/pyliynt.xml
     steps:
-      - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@v1
-        with:
-          app-directory: ${{ inputs.app-directory }}
-
       - name: Lint with pylint
         continue-on-error: true
         if: inputs.pylint
         run: pylint ${{ inputs.module-directory }} --output-format=parseable >> pylint.xml
         working-directory: ${{ inputs.app-directory }}
 
-      - name: Upload Black results
+      - name: Upload PyLint results
         uses: actions/upload-artifact@v3
         with:
           name: pylint-results
@@ -147,18 +127,13 @@ jobs:
     outputs:
       report_path: flake8-results/flake8.xml
     steps:
-      - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@v1
-        with:
-          app-directory: ${{ inputs.app-directory }}
-
       - name: Lint with flake8
         continue-on-error: true
         if: inputs.flake8
         run: flake8 ${{ inputs.module-directory }} --count --exit-zero --select=E9,F63,F7,F82 --show-source --statistics >> flake8.xml
         working-directory: ${{ inputs.app-directory }}
 
-      - name: Upload Black results
+      - name: Upload Flake8 results
         uses: actions/upload-artifact@v3
         with:
           name: flake8-results
