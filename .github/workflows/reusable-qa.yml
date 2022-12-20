@@ -2,6 +2,10 @@ name: Reusable QA
 on:
   workflow_call:
     inputs:
+      deps-directory:
+        description: What folder to search for requirements.
+        required: true
+        type: string
       source-directory:
         description: Directory containing the source code.
         required: true
@@ -11,6 +15,7 @@ on:
         required: false
         default: .
         type: string
+
       sort:
         description: Whether to run isort.
         required: false
@@ -60,8 +65,11 @@ jobs:
     outputs:
       report_path: sort-results/sort.xml
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Load Cache & Dependencies
+        uses: cristovamsilva/python-dependencies-action@main
+        with:
+          deps-directory: ${{ inputs.deps-directory }}
+          qa: true
 
       - name: Sort imports using isort
         continue-on-error: true
@@ -80,8 +88,11 @@ jobs:
     outputs:
       report_path: black-results/black.xml
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Load Cache & Dependencies
+        uses: cristovamsilva/python-dependencies-action@main
+        with:
+          deps-directory: ${{ inputs.deps-directory }}
+          qa: true
 
       - name: Format using Black
         continue-on-error: true
@@ -100,8 +111,11 @@ jobs:
     outputs:
       report_path: mypy-results/mypy.xml
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Load Cache & Dependencies
+        uses: cristovamsilva/python-dependencies-action@main
+        with:
+          deps-directory: ${{ inputs.deps-directory }}
+          qa: true
 
       - name: Format using MyPy
         continue-on-error: true
@@ -120,8 +134,11 @@ jobs:
     outputs:
       report_path: pyliynt-results/pyliynt.xml
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Load Cache & Dependencies
+        uses: cristovamsilva/python-dependencies-action@main
+        with:
+          deps-directory: ${{ inputs.deps-directory }}
+          qa: true
 
       - name: Lint with PyLint
         continue-on-error: true
@@ -140,8 +157,11 @@ jobs:
     outputs:
       report_path: flake8-results/flake8.xml
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - name: Load Cache & Dependencies
+        uses: cristovamsilva/python-dependencies-action@main
+        with:
+          deps-directory: ${{ inputs.deps-directory }}
+          qa: true
 
       - name: Lint with Flake8
         continue-on-error: true
