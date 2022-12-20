@@ -23,6 +23,9 @@ jobs:
     outputs:
       report_path: bandit-results/bandit.xml
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: Verify with Bandit
         continue-on-error: true
         run: bandit -r ${{ inputs.module-directory }} -f xml -o bandit.xml
@@ -39,10 +42,10 @@ jobs:
     continue-on-error: true
     if: github.event_name == 'pull_request'
     steps:
-      - name: "Checkout Repository"
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Dependency Review
+      - name: Review Dependencies
         uses: actions/dependency-review-action@v3
         with:
           license-check: false

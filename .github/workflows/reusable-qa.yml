@@ -60,7 +60,10 @@ jobs:
     outputs:
       report_path: sort-results/sort.xml
     steps:
-      - name: Sort Imports using isort
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Sort imports using isort
         continue-on-error: true
         if: inputs.sort
         run: isort ${{ inputs.module-directory }} --diff >> sort.xml
@@ -77,6 +80,9 @@ jobs:
     outputs:
       report_path: black-results/black.xml
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: Format using Black
         continue-on-error: true
         if: inputs.format
@@ -94,6 +100,9 @@ jobs:
     outputs:
       report_path: mypy-results/mypy.xml
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: Format using MyPy
         continue-on-error: true
         if: inputs.mypy
@@ -111,7 +120,10 @@ jobs:
     outputs:
       report_path: pyliynt-results/pyliynt.xml
     steps:
-      - name: Lint with pylint
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Lint with PyLint
         continue-on-error: true
         if: inputs.pylint
         run: pylint ${{ inputs.module-directory }} --output-format=parseable >> pylint.xml
@@ -128,7 +140,10 @@ jobs:
     outputs:
       report_path: flake8-results/flake8.xml
     steps:
-      - name: Lint with flake8
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Lint with Flake8
         continue-on-error: true
         if: inputs.flake8
         run: flake8 ${{ inputs.module-directory }} --count --exit-zero --select=E9,F63,F7,F82 --show-source --statistics >> flake8.xml
