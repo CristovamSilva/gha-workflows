@@ -62,6 +62,7 @@ on:
 jobs:
   Sort:
     runs-on: ubuntu-latest
+    if: inputs.sort
     outputs:
       report_path: sort-results/sort.xml
     steps:
@@ -69,22 +70,28 @@ jobs:
         uses: cristovamsilva/python-dependencies-action@master
         with:
           deps-directory: ${{ inputs.deps-directory }}
+          application: true
           quality: true
 
       - name: Sort imports using isort
-        continue-on-error: true
-        if: inputs.sort
-        run: isort ${{ inputs.module-directory }} --diff >> sort.xml
+        id: sort
+        uses: isort/isort-action@master
+        with:
+          sortPaths: ${{ inputs.source-directory }}/${{ inputs.module-directory }}
+
+      - name: Save Output to File
+        run: echo ${{ steps.sort.outputs.isort-result }} >> sort.txt
         working-directory: ${{ inputs.source-directory }}
 
       - name: Upload isort results
         uses: actions/upload-artifact@v3
         with:
           name: sort-results
-          path: ${{ inputs.source-directory }}/sort.xml
+          path: ${{ inputs.source-directory }}/sort.txt
 
   Format:
     runs-on: ubuntu-latest
+    if: inputs.format
     outputs:
       report_path: black-results/black.xml
     steps:
@@ -95,10 +102,9 @@ jobs:
           quality: true
 
       - name: Format using Black
-        continue-on-error: true
-        if: inputs.format
-        run: black ${{ inputs.module-directory }} --diff --color >> black.xml
-        working-directory: ${{ inputs.source-directory }}
+        uses: psf/black@stable
+        with:
+          src: ${{ inputs.source-directory }}
 
       - name: Upload Black results
         uses: actions/upload-artifact@v3
@@ -108,6 +114,7 @@ jobs:
 
   TypeCheck:
     runs-on: ubuntu-latest
+    if: inputs.mypy
     outputs:
       report_path: mypy-results/mypy.xml
     steps:
@@ -119,7 +126,6 @@ jobs:
 
       - name: Format using MyPy
         continue-on-error: true
-        if: inputs.mypy
         run: mypy ${{ inputs.module-directory }} >> mypy.xml
         working-directory: ${{ inputs.source-directory }}
 
@@ -143,19 +149,20 @@ jobs:
 
       - name: Lint with PyLint
         continue-on-error: true
-        run: pylint --recursive=y ${{ inputs.module-directory }} --output-format=parseable >> pylint.xml
+        run: pylint --recursive=y ${{ inputs.module-directory }} --output-format=parseable >> pylint.txt
         working-directory: ${{ inputs.source-directory }}
 
       - name: Upload PyLint results
         uses: actions/upload-artifact@v3
         with:
           name: pylint-results
-          path: ${{ inputs.source-directory }}/pylint.xml
+          path: ${{ inputs.source-directory }}/pylint.txt
 
   Flake8:
     runs-on: ubuntu-latest
+    if: inputs.flake8
     outputs:
-      report_path: flake8-results/flake8.xml
+      report_path: flake8-results/flake8.txt
     steps:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@master
@@ -164,13 +171,12 @@ jobs:
           quality: true
 
       - name: Lint with Flake8
-        continue-on-error: true
-        if: inputs.flake8
-        run: flake8 ${{ inputs.module-directory }} --count --exit-zero --select=E9,F63,F7,F82 --show-source --statistics >> flake8.xml
+        # continue-on-error: true
+        run: flake8 ${{ inputs.module-directory }} --count --exit-zero --select=E9,F63,F7,F82 --show-source --statistics --output-file=flake8.txt
         working-directory: ${{ inputs.source-directory }}
 
       - name: Upload Flake8 results
         uses: actions/upload-artifact@v3
         with:
           name: flake8-results
-          path: ${{ inputs.source-directory }}/flake8.xml
+          path: ${{ inputs.source-directory }}/flake8.txt
