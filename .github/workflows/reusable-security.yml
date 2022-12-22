@@ -31,7 +31,7 @@ jobs:
         uses: cristovamsilva/python-dependencies-action@master
         with:
           deps-directory: ${{ inputs.deps-directory }}
-          sec: true
+          security: true
 
       - name: Verify with Bandit
         continue-on-error: true

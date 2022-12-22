@@ -34,7 +34,7 @@ jobs:
         uses: cristovamsilva/python-dependencies-action@master
         with:
           deps-directory: ${{ inputs.deps-directory }}
-          app: true
+          application: true
           test: true
 
       - name: Test Module

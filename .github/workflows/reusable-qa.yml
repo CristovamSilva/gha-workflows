@@ -69,7 +69,7 @@ jobs:
         uses: cristovamsilva/python-dependencies-action@master
         with:
           deps-directory: ${{ inputs.deps-directory }}
-          qa: true
+          quality: true
 
       - name: Sort imports using isort
         continue-on-error: true
