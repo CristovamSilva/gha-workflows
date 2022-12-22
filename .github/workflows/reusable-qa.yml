@@ -131,6 +131,7 @@ jobs:
 
   Pylint:
     runs-on: ubuntu-latest
+    if: inputs.pylint
     outputs:
       report_path: pyliynt-results/pyliynt.xml
     steps:
@@ -142,8 +143,7 @@ jobs:
 
       - name: Lint with PyLint
         continue-on-error: true
-        if: inputs.pylint
-        run: pylint ${{ inputs.module-directory }} --output-format=parseable >> pylint.xml
+        run: pylint --recursive=y ${{ inputs.module-directory }} --output-format=parseable >> pylint.xml
         working-directory: ${{ inputs.source-directory }}
 
       - name: Upload PyLint results
