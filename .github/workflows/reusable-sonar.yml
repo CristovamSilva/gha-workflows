@@ -1,4 +1,4 @@
-name: Reusable SonarCloud
+name: Reusable SonarCloud Workflow
 on:
   workflow_call:
     inputs:

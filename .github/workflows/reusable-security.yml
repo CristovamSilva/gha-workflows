@@ -1,4 +1,4 @@
-name: Reusable Security
+name: Reusable Security Check Workflow
 on:
   workflow_call:
     inputs:
@@ -46,7 +46,6 @@ jobs:
 
   Dependency-Review:
     runs-on: ubuntu-latest
-    continue-on-error: true
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout Repository

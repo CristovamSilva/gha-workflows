@@ -1,4 +1,4 @@
-name: Reusable quality
+name: Reusable Quality Assurance Workflow
 on:
   workflow_call:
     inputs:
@@ -80,14 +80,14 @@ jobs:
           sortPaths: ${{ inputs.source-directory }}/${{ inputs.module-directory }}
 
       - name: Save Output to File
-        run: echo ${{ steps.sort.outputs.isort-result }} >> sort.txt
+        run: echo ${{ steps.sort.outputs.isort-result }}
         working-directory: ${{ inputs.source-directory }}
 
-      - name: Upload isort results
-        uses: actions/upload-artifact@v3
-        with:
-          name: sort-results
-          path: ${{ inputs.source-directory }}/sort.txt
+      # - name: Upload isort results
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: sort-results
+      #     path: ${{ inputs.source-directory }}/sort.txt
 
   Format:
     runs-on: ubuntu-latest
@@ -171,7 +171,6 @@ jobs:
           quality: true
 
       - name: Lint with Flake8
-        # continue-on-error: true
         run: flake8 ${{ inputs.module-directory }} --count --exit-zero --select=E9,F63,F7,F82 --show-source --statistics --output-file=flake8.txt
         working-directory: ${{ inputs.source-directory }}
 
