@@ -4,7 +4,8 @@ on:
     inputs:
       deps-directory:
         description: What folder to search for requirements.
-        required: true
+        required: false
+        default: "."
         type: string
       source-directory:
         description: Directory containing the source code.
@@ -49,22 +50,11 @@ on:
       pylint_report_path:
         description: "Pylint Report Path"
         value: ${{ jobs.Pylint.outputs.report_path }}
-      mypy_report_path:
-        description: "Mypy Report Path"
-        value: ${{ jobs.TypeCheck.outputs.report_path }}
-      black_report_path:
-        description: "Black Report Path"
-        value: ${{ jobs.Format.outputs.report_path }}
-      isort_report_path:
-        description: "iSort Report Path"
-        value: ${{ jobs.Sort.outputs.report_path }}
 
 jobs:
   Sort:
     runs-on: ubuntu-latest
     if: inputs.sort
-    outputs:
-      report_path: sort-results/sort.xml
     steps:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@master
@@ -79,15 +69,9 @@ jobs:
         with:
           sortPaths: ${{ inputs.source-directory }}/${{ inputs.module-directory }}
 
-      - name: Save Output to File
-        run: echo ${{ steps.sort.outputs.isort-result }}
-        working-directory: ${{ inputs.source-directory }}
-
   Format:
     runs-on: ubuntu-latest
     if: inputs.format
-    outputs:
-      report_path: black-results/black.xml
     steps:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@master
@@ -103,8 +87,6 @@ jobs:
   TypeCheck:
     runs-on: ubuntu-latest
     if: inputs.mypy
-    outputs:
-      report_path: mypy-results/mypy.xml
     steps:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@master

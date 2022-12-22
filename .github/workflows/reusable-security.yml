@@ -4,7 +4,8 @@ on:
     inputs:
       deps-directory:
         description: What folder to search for requirements.
-        required: true
+        required: false
+        default: "."
         type: string
       source-directory:
         description: Directory containing the source code.
@@ -34,15 +35,14 @@ jobs:
           security: true
 
       - name: Verify with Bandit
-        continue-on-error: true
-        run: bandit -r ${{ inputs.module-directory }} -f xml -o bandit.xml
+        run: bandit -r ${{ inputs.module-directory }} -f json -o bandit.json
         working-directory: ${{ inputs.source-directory }}
 
       - name: Upload Bandit results
         uses: actions/upload-artifact@v3
         with:
           name: bandit-results
-          path: ${{ inputs.source-directory }}/bandit.xml
+          path: ${{ inputs.source-directory }}/bandit.json
 
   Dependency-Review:
     runs-on: ubuntu-latest
