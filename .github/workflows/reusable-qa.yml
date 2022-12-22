@@ -83,12 +83,6 @@ jobs:
         run: echo ${{ steps.sort.outputs.isort-result }}
         working-directory: ${{ inputs.source-directory }}
 
-      # - name: Upload isort results
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: sort-results
-      #     path: ${{ inputs.source-directory }}/sort.txt
-
   Format:
     runs-on: ubuntu-latest
     if: inputs.format
@@ -106,12 +100,6 @@ jobs:
         with:
           src: ${{ inputs.source-directory }}
 
-      - name: Upload Black results
-        uses: actions/upload-artifact@v3
-        with:
-          name: black-results
-          path: ${{ inputs.source-directory }}/black.xml
-
   TypeCheck:
     runs-on: ubuntu-latest
     if: inputs.mypy
@@ -125,15 +113,8 @@ jobs:
           quality: true
 
       - name: Format using MyPy
-        continue-on-error: true
-        run: mypy ${{ inputs.module-directory }} >> mypy.xml
+        run: mypy ${{ inputs.module-directory }}
         working-directory: ${{ inputs.source-directory }}
-
-      - name: Upload MyPy results
-        uses: actions/upload-artifact@v3
-        with:
-          name: mypy-results
-          path: ${{ inputs.source-directory }}/mypy.xml
 
   Pylint:
     runs-on: ubuntu-latest
@@ -148,7 +129,6 @@ jobs:
           quality: true
 
       - name: Lint with PyLint
-        continue-on-error: true
         run: pylint --recursive=y ${{ inputs.module-directory }} --output-format=parseable >> pylint.txt
         working-directory: ${{ inputs.source-directory }}
 
