@@ -111,14 +111,14 @@ jobs:
           quality: true
 
       - name: Lint with PyLint
-        run: pylint --recursive=y ${{ inputs.module-directory }} --output-format=parseable >> pylint.txt
+        run: pylint --recursive=y ${{ inputs.module-directory }} --output-format=json:pylint.json,colorized
         working-directory: ${{ inputs.source-directory }}
 
       - name: Upload PyLint results
         uses: actions/upload-artifact@v3
         with:
           name: pylint-results
-          path: ${{ inputs.source-directory }}/pylint.txt
+          path: ${{ inputs.source-directory }}/pylint.json
 
   Flake8:
     runs-on: ubuntu-latest

@@ -15,17 +15,17 @@ on:
       bandit-report:
         description: Where to retrieve bandit results.
         required: false
-        default: bandit-results/bandit.xml
+        default: bandit-results/bandit.json
         type: string
       pylint-report:
         description: Where to retrieve pylint results.
         required: false
-        default: pylint-result/pylint.xml
+        default: pylint-result/pylint.txt
         type: string
       flake-report:
         description: Where to retrieve flake results.
         required: false
-        default: flake8-result/flake8.xml
+        default: flake8-result/flake8.txt
         type: string
 
 jobs:
@@ -52,3 +52,6 @@ jobs:
           args: >
             -Dsonar.python.coverage.reportPaths=reports/${{ inputs.cov-report }}
             -Dsonar.python.xunit.reportPath=reports/${{ inputs.exec-report }}
+            -Dsonar.python.bandit.reportPaths=reports/${{ inputs.bandit-report }}
+            -Dsonar.python.pylint.reportPaths=reports/${{ inputs.pylint-report }}
+            -Dsonar.python.flake8.reportPaths=reports/${{ inputs.flake8-report }}
