@@ -20,7 +20,7 @@ on:
       pylint-report:
         description: Where to retrieve pylint results.
         required: false
-        default: pylint-result/pylint.txt
+        default: pylint-result/pylint.json
         type: string
       flake-report:
         description: Where to retrieve flake results.
