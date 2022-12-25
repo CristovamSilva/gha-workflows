@@ -17,6 +17,17 @@ on:
         default: .
         type: string
 
+      bandit:
+        description: Whether to run bandit.
+        required: false
+        default: true
+        type: boolean
+      deps-review:
+        description: Whether to run bandit.
+        required: false
+        default: true
+        type: boolean
+
     outputs:
       bandit_report_path:
         description: "Bandit Report Path"
@@ -25,6 +36,7 @@ on:
 jobs:
   Bandit:
     runs-on: ubuntu-latest
+    if: inputs.bandit
     outputs:
       report_path: bandit-results/bandit.xml
     steps:
@@ -46,7 +58,7 @@ jobs:
 
   Dependency-Review:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: deps-review && github.event_name == 'pull_request'
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
