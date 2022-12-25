@@ -88,10 +88,6 @@ jobs:
     runs-on: ubuntu-latest
     if: inputs.mypy
     steps:
-      - name: Echo pwd
-        run: pwd
-        shell: bash
-
       - name: Format with MyPy
         uses: cristovamsilva/run-and-report-action@main
         with:
