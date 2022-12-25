@@ -58,7 +58,7 @@ jobs:
 
   Dependency-Review:
     runs-on: ubuntu-latest
-    if: deps-review && github.event_name == 'pull_request'
+    if: ${{ deps-review && github.event_name == 'pull_request' }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
