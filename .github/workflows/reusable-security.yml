@@ -43,9 +43,6 @@ jobs:
     outputs:
       report_path: bandit-results/bandit.xml
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
       - name: Verify with Bandit
         uses: ./.github/actions/run-and-report
         with:
@@ -55,7 +52,7 @@ jobs:
           source-directory: ${{ inputs.source-directory }}
           report: true
           report-key: bandit-results
-          report-file: ${{ inputs.source-directory }}/$REPORT_FILE
+          report-file: $REPORT_FILE
 
       # - name: Load Cache & Dependencies
       #   uses: cristovamsilva/python-dependencies-action@master
