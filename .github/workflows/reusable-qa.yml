@@ -92,7 +92,7 @@ jobs:
         uses: cristovamsilva/run-and-report-action@main
         with:
           deps-directory: ${{ inputs.deps-directory }}
-          security-deps: true
+          quality-deps: true
           command: mypy ${{ inputs.module-directory }}
           source-directory: ${{ inputs.source-directory }}
 
