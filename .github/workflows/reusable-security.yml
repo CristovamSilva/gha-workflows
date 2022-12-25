@@ -52,11 +52,11 @@ jobs:
         with:
           deps-directory: ${{ inputs.deps-directory }}
           security-deps: true
-          command: bandit -r ${{ inputs.module-directory }} -f $REPORT_TYPE -o ${{ steps.report-file.outputs.file }}
+          command: bandit -r ${{ inputs.module-directory }} -f json -o bandit.json
           source-directory: ${{ inputs.source-directory }}
           report: true
           report-key: bandit-results
-          report-file: ${{ inputs.source-directory }}/${{ steps.report-file.outputs.file }}
+          report-file: ${{ inputs.source-directory }}/bandit.json
 
   Dependency-Review:
     runs-on: ubuntu-latest
