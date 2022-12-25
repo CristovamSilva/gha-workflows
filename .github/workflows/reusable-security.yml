@@ -37,24 +37,38 @@ jobs:
   Bandit:
     runs-on: ubuntu-latest
     if: inputs.bandit
+    env:
+      REPORT_FILE: bandit
+      REPORT_TYPE: json
     outputs:
       report_path: bandit-results/bandit.xml
     steps:
-      - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@master
+      - name: Verify with Bandit
+        uses: ./.github/actions/run-and-report
         with:
           deps-directory: ${{ inputs.deps-directory }}
-          security: true
+          security-deps: true
+          command: bandit -r ${{ inputs.module-directory }} -f $REPORT_TYPE -o $REPORT_FILE.$REPORT_TYPE
+          source-directory: ${{ inputs.source-directory }}
+          report: true
+          report-key: bandit-results
+          report-file: ${{ inputs.source-directory }}/$REPORT_FILE
 
-      - name: Verify with Bandit
-        run: bandit -r ${{ inputs.module-directory }} -f json -o bandit.json
-        working-directory: ${{ inputs.source-directory }}
+      # - name: Load Cache & Dependencies
+      #   uses: cristovamsilva/python-dependencies-action@master
+      #   with:
+      #     deps-directory: ${{ inputs.deps-directory }}
+      #     security: true
 
-      - name: Upload Bandit results
-        uses: actions/upload-artifact@v3
-        with:
-          name: bandit-results
-          path: ${{ inputs.source-directory }}/bandit.json
+      # - name: Verify with Bandit
+      #   run: bandit -r ${{ inputs.module-directory }} -f json -o bandit.json
+      #   working-directory: ${{ inputs.source-directory }}
+
+      # - name: Upload Bandit results
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: bandit-results
+      #     path: ${{ inputs.source-directory }}/bandit.json
 
   Dependency-Review:
     runs-on: ubuntu-latest
