@@ -44,7 +44,7 @@ jobs:
       report_path: bandit-results/bandit.xml
     steps:
       - name: Verify with Bandit
-        uses: ./.github/actions/run-and-report
+        uses: ./.github/actions/run-and-report@main
         with:
           deps-directory: ${{ inputs.deps-directory }}
           security-deps: true
