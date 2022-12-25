@@ -44,7 +44,7 @@ jobs:
       report_path: bandit-results/bandit.xml
     steps:
       - name: Verify with Bandit
-        uses: ./.github/actions/run-and-report
+        uses: cristovamsilva/run-and-report-action@main
         with:
           deps-directory: ${{ inputs.deps-directory }}
           security-deps: true
@@ -53,22 +53,6 @@ jobs:
           report: true
           report-key: bandit-results
           report-file: $REPORT_FILE
-
-      # - name: Load Cache & Dependencies
-      #   uses: cristovamsilva/python-dependencies-action@master
-      #   with:
-      #     deps-directory: ${{ inputs.deps-directory }}
-      #     security: true
-
-      # - name: Verify with Bandit
-      #   run: bandit -r ${{ inputs.module-directory }} -f json -o bandit.json
-      #   working-directory: ${{ inputs.source-directory }}
-
-      # - name: Upload Bandit results
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: bandit-results
-      #     path: ${{ inputs.source-directory }}/bandit.json
 
   Dependency-Review:
     runs-on: ubuntu-latest

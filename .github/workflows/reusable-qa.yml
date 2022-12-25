@@ -88,15 +88,13 @@ jobs:
     runs-on: ubuntu-latest
     if: inputs.mypy
     steps:
-      - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@master
+      - name: Format with MyPy
+        uses: cristovamsilva/run-and-report-action@main
         with:
           deps-directory: ${{ inputs.deps-directory }}
-          quality: true
-
-      - name: Format using MyPy
-        run: mypy ${{ inputs.module-directory }}
-        working-directory: ${{ inputs.source-directory }}
+          security-deps: true
+          command: mypy ${{ inputs.module-directory }}
+          source-directory: ${{ inputs.source-directory }}
 
   Pylint:
     runs-on: ubuntu-latest
