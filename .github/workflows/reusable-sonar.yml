@@ -31,7 +31,6 @@ on:
 jobs:
   SonarCloud:
     runs-on: ubuntu-latest
-    if: always()
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
