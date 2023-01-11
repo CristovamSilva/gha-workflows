@@ -14,7 +14,7 @@ on:
         default: src
         type: string
 
-      test-directory:
+      tests-directory:
         description: Directory containing the test code.
         required: false
         default: tests
