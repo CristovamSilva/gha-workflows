@@ -98,7 +98,7 @@ on:
 
 jobs:
   Test:
-    if: inputs.enalbe-test
+    if: inputs.enable-test
     runs-on: ubuntu-latest
     steps:
       - name: Test with Pytest
@@ -117,7 +117,7 @@ jobs:
       source-directory: ${{ inputs.source-directory }}
       module-directory: ${{ inputs.module-directory }}
       bandit: ${{ inputs.security-bandit }}
-      deps-review: ${{ inputs.deps-review }}
+      deps-review: ${{ inputs.security-deps-review }}
 
   Quality:
     if: inputs.enable-quality
