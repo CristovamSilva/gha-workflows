@@ -2,7 +2,7 @@ name: Reusable Security Check Workflow
 on:
   workflow_call:
     inputs:
-      deps-directory:
+      dependencies-directory:
         description: What folder to search for requirements.
         required: false
         default: "."
@@ -14,7 +14,7 @@ on:
       module-directory:
         description: Directory containing a specific module source code.
         required: false
-        default: .
+        default: "."
         type: string
 
       bandit:
@@ -29,7 +29,7 @@ on:
         type: boolean
 
     outputs:
-      bandit_report_path:
+      security-report:
         description: "Bandit Report Path"
         value: ${{ jobs.Bandit.outputs.report_path }}
 
@@ -50,7 +50,7 @@ jobs:
       - name: Verify with Bandit
         uses: cristovamsilva/run-and-report-action@main
         with:
-          deps-directory: ${{ inputs.deps-directory }}
+          dependencies-directory: ${{ inputs.dependencies-directory }}
           security-deps: true
           command: bandit -r ${{ inputs.module-directory }} -f json -o bandit.json
           source-directory: ${{ inputs.source-directory }}

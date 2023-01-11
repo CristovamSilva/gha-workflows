@@ -2,7 +2,7 @@ name: Reusable Quality Assurance Workflow
 on:
   workflow_call:
     inputs:
-      deps-directory:
+      dependencies-directory:
         description: What folder to search for requirements.
         required: false
         default: "."
@@ -14,7 +14,7 @@ on:
       module-directory:
         description: Directory containing a specific module source code.
         required: false
-        default: .
+        default: "."
         type: string
 
       sort:
@@ -44,10 +44,10 @@ on:
         type: boolean
 
     outputs:
-      flake8_report_path:
+      flake8_report:
         description: "Flake8 Report Path"
         value: ${{ jobs.Flake8.outputs.report_path }}
-      pylint_report_path:
+      pylint_report:
         description: "Pylint Report Path"
         value: ${{ jobs.Pylint.outputs.report_path }}
 
@@ -59,7 +59,7 @@ jobs:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@master
         with:
-          deps-directory: ${{ inputs.deps-directory }}
+          dependencies-directory: ${{ inputs.dependencies-directory }}
           application: true
           quality: true
 
@@ -76,27 +76,35 @@ jobs:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@master
         with:
-          deps-directory: ${{ inputs.deps-directory }}
+          dependencies-directory: ${{ inputs.dependencies-directory }}
           quality: true
 
       - name: Format using Black
         uses: psf/black@stable
         with:
+          options: "--exclude=tests/"
           src: ${{ inputs.source-directory }}
 
   TypeCheck:
+    defaults:
+      run:
+        working-directory: ${{ inputs.source-directory }}
     runs-on: ubuntu-latest
     if: inputs.mypy
     steps:
-      - name: Format with MyPy
-        uses: cristovamsilva/run-and-report-action@main
+      - name: Load Cache & Dependencies
+        uses: cristovamsilva/python-dependencies-action@master
         with:
-          deps-directory: ${{ inputs.deps-directory }}
-          quality-deps: true
-          command: mypy ${{ inputs.module-directory }}
-          source-directory: ${{ inputs.source-directory }}
+          dependencies-directory: ${{ inputs.dependencies-directory }}
+          quality: true
+
+      - name: Format using MyPy
+        run: mypy ${{ inputs.module-directory }}
 
   Pylint:
+    defaults:
+      run:
+        working-directory: ${{ inputs.source-directory }}
     runs-on: ubuntu-latest
     if: inputs.pylint
     outputs:
@@ -105,12 +113,11 @@ jobs:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@master
         with:
-          deps-directory: ${{ inputs.deps-directory }}
+          dependencies-directory: ${{ inputs.dependencies-directory }}
           quality: true
 
       - name: Lint with PyLint
         run: pylint --recursive=y ${{ inputs.module-directory }} --output-format=json:pylint.json,colorized
-        working-directory: ${{ inputs.source-directory }}
 
       - name: Upload PyLint results
         uses: actions/upload-artifact@v3
@@ -119,6 +126,9 @@ jobs:
           path: ${{ inputs.source-directory }}/pylint.json
 
   Flake8:
+    defaults:
+      run:
+        working-directory: ${{ inputs.source-directory }}
     runs-on: ubuntu-latest
     if: inputs.flake8
     outputs:
@@ -127,12 +137,11 @@ jobs:
       - name: Load Cache & Dependencies
         uses: cristovamsilva/python-dependencies-action@master
         with:
-          deps-directory: ${{ inputs.deps-directory }}
+          dependencies-directory: ${{ inputs.dependencies-directory }}
           quality: true
 
       - name: Lint with Flake8
         run: flake8 ${{ inputs.module-directory }} --count --exit-zero --select=E9,F63,F7,F82 --show-source --statistics --output-file=flake8.txt
-        working-directory: ${{ inputs.source-directory }}
 
       - name: Upload Flake8 results
         uses: actions/upload-artifact@v3

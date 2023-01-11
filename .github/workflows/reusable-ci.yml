@@ -1,0 +1,145 @@
+name: Reusable Integration Workflow
+on:
+  workflow_call:
+    inputs:
+      dependencies-directory:
+        description: Directory containing requirements files.
+        required: false
+        default: src
+        type: string
+
+      source-directory:
+        description: Directory containing the source code.
+        required: false
+        default: src
+        type: string
+
+      test-directory:
+        description: Directory containing the test code.
+        required: false
+        default: tests
+        type: string
+
+      module-directory:
+        description: Directory containing a specific module source code.
+        required: false
+        default: "."
+        type: string
+
+      enable-test:
+        description: Whether to run tests.
+        required: false
+        default: true
+        type: boolean
+      test-ignore-erros:
+        description: Whether to run tests.
+        required: false
+        default: false
+        type: boolean
+      test-extra-arguments:
+        description: Extra arguments to pass to pytest command.
+        required: false
+        default: ""
+        type: string
+
+      enable-security:
+        description: Whether to run security checks.
+        required: false
+        default: true
+        type: boolean
+      security-bandit:
+        description: Whether to run bandit checks.
+        required: false
+        default: true
+        type: boolean
+      security-deps-review:
+        description: Whether to run dependency checks.
+        required: false
+        default: false
+        type: boolean
+
+      enable-quality:
+        description: Whether to run quality assurance checks.
+        required: false
+        default: true
+        type: boolean
+
+      quality-sort:
+        description: Whether to run isort.
+        required: false
+        default: true
+        type: boolean
+      quality-format:
+        description: Whether to run black.
+        required: false
+        default: true
+        type: boolean
+      quality-mypy:
+        description: Whether to run black.
+        required: false
+        default: true
+        type: boolean
+      quality-flake8:
+        description: Whether to run flake8.
+        required: false
+        default: true
+        type: boolean
+      quality-pylint:
+        description: Whether to run pylint.
+        required: false
+        default: true
+        type: boolean
+
+      enable-sonar:
+        description: Whether to export to sonarcloud.
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  Test:
+    if: inputs.enalbe-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test with Pytest
+        uses: cristovamsilva/pytest-action@main
+        with:
+          dependencies-directory: ${{ inputs.dependencies-directory }}
+          source-directory: ${{ inputs.tests-directory }}
+          module-directory: ${{ inputs.module-directory }}
+          ignore-errors: ${{ inputs.test-ignore-errors }}
+
+  Security:
+    if: inputs.enable-security
+    uses: cristovamsilva/gha-workflows/.github/workflows/reusable-security.yml@main
+    with:
+      dependencies-directory: ${{ inputs.dependencies-directory }}
+      source-directory: ${{ inputs.source-directory }}
+      module-directory: ${{ inputs.module-directory }}
+      bandit: ${{ inputs.security-bandit }}
+      deps-review: ${{ inputs.deps-review }}
+
+  Quality:
+    if: inputs.enable-quality
+    uses: cristovamsilva/gha-workflows/.github/workflows/reusable-qa.yml@main
+    with:
+      dependencies-directory: ${{ inputs.dependencies-directory }}
+      source-directory: ${{ inputs.source-directory }}
+      module-directory: ${{ inputs.module-directory }}
+      sort: ${{ inputs.quality-sort }}
+      format: ${{ inputs.quality-format }}
+      mypy: ${{ inputs.quality-mypy }}
+      flake8: ${{ inputs.quality-flake8 }}
+      pylint: ${{ inputs.quality-pylint }}
+
+  SonarCloud:
+    needs: [Quality, Security, Test]
+    if: inputs.enable-sonar
+    uses: cristovamsilva/gha-workflows/.github/workflows/reusable-sonar.yml@main
+    with:
+      exec-report: ${{ needs.Test.outputs.execution-report }}
+      cov-report: ${{ needs.Test.outputs.coverage-report }}
+      bandit-report: ${{ needs.Security.outputs.security-report }}
+      pylint-report: ${{ needs.Quality.outputs.pylint_report }}
+      flake-report: ${{ needs.QUality.outputs.flake8_report }}
+    secrets: inherit
