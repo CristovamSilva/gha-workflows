@@ -105,7 +105,7 @@ jobs:
         uses: cristovamsilva/pytest-action@main
         with:
           dependencies-directory: ${{ inputs.dependencies-directory }}
-          source-directory: ${{ inputs.tests-directory }}
+          tests-directory: ${{ inputs.tests-directory }}
           module-directory: ${{ inputs.module-directory }}
           ignore-errors: ${{ inputs.test-ignore-errors }}
 
