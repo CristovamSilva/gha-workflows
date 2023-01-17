@@ -5,42 +5,43 @@ on:
       dependencies-directory:
         description: What folder to search for requirements.
         required: false
-        default: "."
+        default: .
         type: string
       source-directory:
         description: Directory containing the source code.
-        required: true
+        required: false
+        default: .
         type: string
       module-directory:
         description: Directory containing a specific module source code.
         required: false
-        default: "."
+        default: .
         type: string
 
       sort:
         description: Whether to run isort.
         required: false
-        default: true
+        default: false
         type: boolean
       format:
         description: Whether to run black.
         required: false
-        default: true
+        default: false
         type: boolean
       mypy:
-        description: Whether to run black.
+        description: Whether to run mypy.
         required: false
-        default: true
+        default: false
         type: boolean
       flake8:
         description: Whether to run flake8.
         required: false
-        default: true
+        default: false
         type: boolean
       pylint:
         description: Whether to run pylint.
         required: false
-        default: true
+        default: false
         type: boolean
 
     outputs:
@@ -57,7 +58,7 @@ jobs:
     if: inputs.sort
     steps:
       - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@master
+        uses: CristovamSilva/python-dependencies-action@master
         with:
           dependencies-directory: ${{ inputs.dependencies-directory }}
           application: true
@@ -74,7 +75,7 @@ jobs:
     if: inputs.format
     steps:
       - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@master
+        uses: CristovamSilva/python-dependencies-action@master
         with:
           dependencies-directory: ${{ inputs.dependencies-directory }}
           quality: true
@@ -82,42 +83,37 @@ jobs:
       - name: Format using Black
         uses: psf/black@stable
         with:
-          options: "--exclude=tests/"
           src: ${{ inputs.source-directory }}
 
   TypeCheck:
-    defaults:
-      run:
-        working-directory: ${{ inputs.source-directory }}
     runs-on: ubuntu-latest
     if: inputs.mypy
     steps:
       - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@master
+        uses: CristovamSilva/python-dependencies-action@master
         with:
           dependencies-directory: ${{ inputs.dependencies-directory }}
           quality: true
 
       - name: Format using MyPy
         run: mypy ${{ inputs.module-directory }}
+        working-directory: ${{ inputs.source-directory }}
 
   Pylint:
-    defaults:
-      run:
-        working-directory: ${{ inputs.source-directory }}
     runs-on: ubuntu-latest
     if: inputs.pylint
     outputs:
-      report_path: pyliynt-results/pyliynt.xml
+      report_path: pyliynt-results/pylint.json
     steps:
       - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@master
+        uses: CristovamSilva/python-dependencies-action@master
         with:
           dependencies-directory: ${{ inputs.dependencies-directory }}
           quality: true
 
       - name: Lint with PyLint
         run: pylint --recursive=y ${{ inputs.module-directory }} --output-format=json:pylint.json,colorized
+        working-directory: ${{ inputs.source-directory }}
 
       - name: Upload PyLint results
         uses: actions/upload-artifact@v3
@@ -126,22 +122,22 @@ jobs:
           path: ${{ inputs.source-directory }}/pylint.json
 
   Flake8:
-    defaults:
-      run:
-        working-directory: ${{ inputs.source-directory }}
     runs-on: ubuntu-latest
     if: inputs.flake8
     outputs:
       report_path: flake8-results/flake8.txt
     steps:
       - name: Load Cache & Dependencies
-        uses: cristovamsilva/python-dependencies-action@master
+        uses: CristovamSilva/python-dependencies-action@master
         with:
           dependencies-directory: ${{ inputs.dependencies-directory }}
           quality: true
 
       - name: Lint with Flake8
-        run: flake8 ${{ inputs.module-directory }} --count --exit-zero --select=E9,F63,F7,F82 --show-source --statistics --output-file=flake8.txt
+        run: |
+          flake8 ${{ inputs.module-directory }} --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 ${{ inputs.module-directory }} --count --exit-zero --max-complexity=10 --statistics --output-file=flake8.txt
+        working-directory: ${{ inputs.source-directory }}
 
       - name: Upload Flake8 results
         uses: actions/upload-artifact@v3
