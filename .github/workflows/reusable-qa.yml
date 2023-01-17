@@ -61,7 +61,6 @@ jobs:
         uses: CristovamSilva/python-dependencies-action@master
         with:
           dependencies-directory: ${{ inputs.dependencies-directory }}
-          application: true
           quality: true
 
       - name: Sort imports using isort
