@@ -36,27 +36,24 @@ on:
 jobs:
   Bandit:
     runs-on: ubuntu-latest
-    if: inputs.bandit
-    env:
-      REPORT_FILE: bandit
-      REPORT_TYPE: json
     outputs:
-      report_path: bandit-results/bandit.xml
+      report_path: bandit-results/bandit.json
     steps:
-      - name: Output Report File
-        id: report-file
-        run: echo file=$REPORT_FILE.$REPORT_TYPE >> GITHUB_OUTPUT
-
-      - name: Verify with Bandit
-        uses: cristovamsilva/run-and-report-action@main
+      - name: Load Cache & Dependencies
+        uses: TeiaLabs/python-dependencies-action@master
         with:
           dependencies-directory: ${{ inputs.dependencies-directory }}
-          security-deps: true
-          command: bandit -r ${{ inputs.module-directory }} -f json -o bandit.json
-          source-directory: ${{ inputs.source-directory }}
-          report: true
-          report-key: bandit-results
-          report-file: ${{ inputs.source-directory }}/bandit.json
+          security: true
+
+      - name: Verify with Bandit
+        run: bandit -r ${{ inputs.module-directory }} -f json -o bandit.json
+        working-directory: ${{ inputs.source-directory }}
+
+      - name: Upload Bandit results
+        uses: actions/upload-artifact@v3
+        with:
+          name: bandit-results
+          path: ${{ inputs.source-directory }}/bandit.json
 
   Dependency-Review:
     runs-on: ubuntu-latest
