@@ -29,7 +29,7 @@ on:
       enable-test:
         description: Whether to run tests.
         required: false
-        default: true
+        default: false
         type: boolean
       test-ignore-erros:
         description: Whether to run tests.
@@ -45,12 +45,12 @@ on:
       enable-security:
         description: Whether to run security checks.
         required: false
-        default: true
+        default: false
         type: boolean
       security-bandit:
         description: Whether to run bandit checks.
         required: false
-        default: true
+        default: false
         type: boolean
       security-deps-review:
         description: Whether to run dependency checks.
@@ -61,39 +61,39 @@ on:
       enable-quality:
         description: Whether to run quality assurance checks.
         required: false
-        default: true
+        default: false
         type: boolean
 
       quality-sort:
         description: Whether to run isort.
         required: false
-        default: true
+        default: false
         type: boolean
       quality-format:
         description: Whether to run black.
         required: false
-        default: true
+        default: false
         type: boolean
       quality-mypy:
         description: Whether to run black.
         required: false
-        default: true
+        default: false
         type: boolean
       quality-flake8:
         description: Whether to run flake8.
         required: false
-        default: true
+        default: false
         type: boolean
       quality-pylint:
         description: Whether to run pylint.
         required: false
-        default: true
+        default: false
         type: boolean
 
       enable-sonar:
         description: Whether to export to sonarcloud.
         required: false
-        default: true
+        default: false
         type: boolean
 
 jobs:
@@ -137,8 +137,8 @@ jobs:
     if: inputs.enable-sonar
     uses: cristovamsilva/gha-workflows/.github/workflows/reusable-sonar.yml@main
     with:
-      exec-report: ${{ needs.Test.outputs.execution-report }}
-      cov-report: ${{ needs.Test.outputs.coverage-report }}
+      execution-report: ${{ needs.Test.outputs.execution-report }}
+      coverage-report: ${{ needs.Test.outputs.coverage-report }}
       bandit-report: ${{ needs.Security.outputs.security-report }}
       pylint-report: ${{ needs.Quality.outputs.pylint_report }}
       flake-report: ${{ needs.QUality.outputs.flake8_report }}

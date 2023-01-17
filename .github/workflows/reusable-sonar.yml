@@ -2,12 +2,12 @@ name: Reusable SonarCloud Workflow
 on:
   workflow_call:
     inputs:
-      exec-report:
+      execution-report:
         description: Where to retrieve pytest execution results.
         required: false
         default: pytest-exec-results/xunit-result.xml
         type: string
-      cov-report:
+      coverage-report:
         description: Where to retrieve pytest coverage results.
         required: false
         default: pytest-cov-results/coverage.xml
@@ -50,8 +50,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.python.coverage.reportPaths=reports/${{ inputs.cov-report }}
-            -Dsonar.python.xunit.reportPath=reports/${{ inputs.exec-report }}
+            -Dsonar.python.coverage.reportPaths=reports/${{ inputs.coverage-report }}
+            -Dsonar.python.xunit.reportPath=reports/${{ inputs.execution-report }}
             -Dsonar.python.bandit.reportPaths=reports/${{ inputs.bandit-report }}
             -Dsonar.python.pylint.reportPaths=reports/${{ inputs.pylint-report }}
             -Dsonar.python.flake8.reportPaths=reports/${{ inputs.flake8-report }}
