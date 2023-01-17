@@ -98,7 +98,7 @@ jobs:
         run: mypy ${{ inputs.module-directory }}
         working-directory: ${{ inputs.source-directory }}
 
-  Pylint:
+  PyLint:
     runs-on: ubuntu-latest
     if: inputs.pylint
     outputs:
