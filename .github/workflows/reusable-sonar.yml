@@ -6,27 +6,27 @@ on:
         description: Where to retrieve pytest execution results.
         required: false
         default: pytest-exec-results/xunit-result.xml
-        type: file
+        type: string
       coverage-report:
         description: Where to retrieve pytest coverage results.
         required: false
         default: pytest-cov-results/coverage.xml
-        type: file
+        type: string
       bandit-report:
         description: Where to retrieve bandit results.
         required: false
         default: bandit-results/bandit.json
-        type: file
+        type: string
       pylint-report:
         description: Where to retrieve pylint results.
         required: false
         default: pylint-result/pylint.json
-        type: file
+        type: string
       flake-report:
         description: Where to retrieve flake results.
         required: false
         default: flake8-result/flake8.txt
-        type: file
+        type: string
 
 jobs:
   SonarCloud:
