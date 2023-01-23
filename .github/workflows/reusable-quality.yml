@@ -118,14 +118,14 @@ jobs:
           quality-packages: pylint
 
       - name: Lint with PyLint
-        run: pylint --recursive=y ${{ inputs.package-directory }} --output-format=json:${{ env.report-file }}
+        run: pylint --recursive=y ${{ inputs.package-directory }} --output-format=json:${{ env.report_file }}
         working-directory: ${{ inputs.source-directory }}
 
       - name: Upload PyLint results
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.report_path }}
-          path: ${{ inputs.source-directory }}/${{ env.report-file }}
+          path: ${{ inputs.source-directory }}/${{ env.report_file }}
 
   Flake8:
     runs-on: ubuntu-latest
@@ -146,11 +146,11 @@ jobs:
       - name: Lint with Flake8
         run: |
           flake8 ${{ inputs.package-directory }} --count --select=E9,F63,F7,F82 --show-source --statistics
-          flake8 ${{ inputs.package-directory }} --count --exit-zero --max-complexity=10 --statistics --output-file=${{ env.report-file }}
+          flake8 ${{ inputs.package-directory }} --count --exit-zero --max-complexity=10 --statistics --output-file=${{ env.report_file }}
         working-directory: ${{ inputs.source-directory }}
 
       - name: Upload Flake8 results
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.report_path }}
-          path: ${{ inputs.source-directory }}/${{ env.report-file }}
+          path: ${{ inputs.source-directory }}/${{ env.report_file }}
