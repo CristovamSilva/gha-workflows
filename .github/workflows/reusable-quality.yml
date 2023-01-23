@@ -6,16 +6,12 @@ on:
         description: What folder to search for requirements.
         required: false
         default: .
-        type: directory
-        validation:
-          rule: directoryExists
+        type: string
       source-directory:
         description: Directory containing the source code.
         required: false
         default: .
-        type: directory
-        validation:
-          rule: directoryExists
+        type: string
       package-directory:
         description: Directory containing a specific module source code.
         required: false
