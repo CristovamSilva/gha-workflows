@@ -11,7 +11,7 @@ on:
         description: Directory containing the source code.
         required: true
         type: string
-      module-directory:
+      package-directory:
         description: Directory containing a specific module source code.
         required: false
         default: "."
@@ -22,11 +22,17 @@ on:
         required: false
         default: true
         type: boolean
-      deps-review:
+
+      dependencies-review:
         description: Whether to run bandit.
         required: false
         default: true
         type: boolean
+      review-config-file:
+        description: Whether to run bandit.
+        required: false
+        default: "./.github/dependency-review-config.yml"
+        type: string
 
     outputs:
       security-report:
@@ -37,27 +43,31 @@ jobs:
   Bandit:
     runs-on: ubuntu-latest
     outputs:
-      report_path: bandit-results/bandit.json
+      report_path: ${{ env.report_path }}/${{ env.report_file }}
+    env:
+      report_path: bandit-results
+      report_file: bandit.json
     steps:
       - name: Load Cache & Dependencies
-        uses: TeiaLabs/python-dependencies-action@master
+        uses: CristovamSilva/python-dependencies-action@master
         with:
           dependencies-directory: ${{ inputs.dependencies-directory }}
           security: true
+          security-packages: bandit
 
       - name: Verify with Bandit
-        run: bandit -r ${{ inputs.module-directory }} -f json -o bandit.json
+        run: bandit -r ${{ inputs.package-directory }} -f json -o ${{ env.report_file }}
         working-directory: ${{ inputs.source-directory }}
 
       - name: Upload Bandit results
         uses: actions/upload-artifact@v3
         with:
-          name: bandit-results
-          path: ${{ inputs.source-directory }}/bandit.json
+          name: ${{ env.report_path }}
+          path: ${{ inputs.source-directory }}/${{ env.report_file }}
 
   Dependency-Review:
     runs-on: ubuntu-latest
-    if: inputs.deps-review && github.event_name == 'pull_request'
+    if: inputs.dependencies-review && github.event_name == 'pull_request'
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -65,5 +75,4 @@ jobs:
       - name: Review Dependencies
         uses: actions/dependency-review-action@v3
         with:
-          license-check: false
-          config-file: "./.github/dependency-review-config.yml"
+          config-file: ${{ inputs.review-config-file }}
