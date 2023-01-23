@@ -1,0 +1,160 @@
+name: Reusable Quality Assurance Workflow
+on:
+  workflow_call:
+    inputs:
+      dependencies-directory:
+        description: What folder to search for requirements.
+        required: false
+        default: .
+        type: directory
+        validation:
+          rule: directoryExists
+      source-directory:
+        description: Directory containing the source code.
+        required: false
+        default: .
+        type: directory
+        validation:
+          rule: directoryExists
+      package-directory:
+        description: Directory containing a specific module source code.
+        required: false
+        default: .
+        type: string
+
+      sort:
+        description: Whether to run isort.
+        required: false
+        default: false
+        type: boolean
+      format:
+        description: Whether to run black.
+        required: false
+        default: false
+        type: boolean
+      mypy:
+        description: Whether to run mypy.
+        required: false
+        default: false
+        type: boolean
+      flake8:
+        description: Whether to run flake8.
+        required: false
+        default: false
+        type: boolean
+      pylint:
+        description: Whether to run pylint.
+        required: false
+        default: false
+        type: boolean
+
+    outputs:
+      flake8_report:
+        description: "Flake8 Report Path"
+        value: ${{ jobs.Flake8.outputs.report_path }}
+      pylint_report:
+        description: "Pylint Report Path"
+        value: ${{ jobs.Pylint.outputs.report_path }}
+
+jobs:
+  Sort:
+    runs-on: ubuntu-latest
+    if: inputs.sort
+    steps:
+      - name: Load Cache & Dependencies
+        uses: CristovamSilva/python-dependencies-action@master
+        with:
+          dependencies-directory: ${{ inputs.dependencies-directory }}
+          quality: true
+          quality-packages: isort
+
+      - name: Sort imports using isort
+        id: sort
+        uses: isort/isort-action@master
+        with:
+          sortPaths: ${{ inputs.source-directory }}/${{ inputs.package-directory }}
+
+  Format:
+    runs-on: ubuntu-latest
+    if: inputs.format
+    steps:
+      - name: Load Cache & Dependencies
+        uses: CristovamSilva/python-dependencies-action@master
+        with:
+          dependencies-directory: ${{ inputs.dependencies-directory }}
+          quality: true
+          quality-packages: black
+
+      - name: Format using Black
+        uses: psf/black@stable
+        with:
+          src: ${{ inputs.source-directory }}/${{ inputs.package-directory }}
+
+  TypeCheck:
+    runs-on: ubuntu-latest
+    if: inputs.mypy
+    steps:
+      - name: Load Cache & Dependencies
+        uses: CristovamSilva/python-dependencies-action@master
+        with:
+          dependencies-directory: ${{ inputs.dependencies-directory }}
+          quality: true
+          quality-packages: mypy
+
+      - name: Format using MyPy
+        run: mypy ${{ inputs.package-directory }}
+        working-directory: ${{ inputs.source-directory }}
+
+  PyLint:
+    runs-on: ubuntu-latest
+    if: inputs.pylint
+    outputs:
+      report_path: ${{ env.report_path }}/${{ env.report_file }}
+    env:
+      report_path: pylint-results
+      report_file: pylint.json
+    steps:
+      - name: Load Cache & Dependencies
+        uses: CristovamSilva/python-dependencies-action@master
+        with:
+          dependencies-directory: ${{ inputs.dependencies-directory }}
+          quality: true
+          quality-packages: pylint
+
+      - name: Lint with PyLint
+        run: pylint --recursive=y ${{ inputs.package-directory }} --output-format=json:${{ env.report-file }}
+        working-directory: ${{ inputs.source-directory }}
+
+      - name: Upload PyLint results
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.report_path }}
+          path: ${{ inputs.source-directory }}/${{ env.report-file }}
+
+  Flake8:
+    runs-on: ubuntu-latest
+    if: inputs.flake8
+    outputs:
+      report_path: ${{ env.report_path }}/${{ env.report_file }}
+    env:
+      report_path: flake8-results
+      report_file: flake8.txt
+    steps:
+      - name: Load Cache & Dependencies
+        uses: CristovamSilva/python-dependencies-action@master
+        with:
+          dependencies-directory: ${{ inputs.dependencies-directory }}
+          quality: true
+          quality-packages: flake8
+
+      - name: Lint with Flake8
+        run: |
+          flake8 ${{ inputs.package-directory }} --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 ${{ inputs.package-directory }} --count --exit-zero --max-complexity=10 --statistics --output-file=${{ env.report-file }}
+        working-directory: ${{ inputs.source-directory }}
+
+      - name: Upload Flake8 results
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.report_path }}
+          path: ${{ inputs.source-directory }}/${{ env.report-file }}

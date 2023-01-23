@@ -1,0 +1,44 @@
+name: Reusable Release Workflow
+
+on:
+  workflow_call:
+  inputs:
+    task-definition:
+      description: Name of the task definition to update.
+      required: true
+      type: string
+    ecs-cluster:
+      description: Name of the cluster the service to be updated is deployed.
+      required: true
+      type: string
+    ecs-service:
+      description: Name of the service to be updated with the new task definition.
+      required: true
+      type: string
+    aws-iam-role:
+      description: IAM role with permissions to update services and task definitions.
+      required: true
+      type: string
+    aws-region:
+      description: AWS region of the previously listed resources.
+      required: false
+      default: us-east-1
+      type: string
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          role-to-assume: ${{ inputs.aws-iam-role }}
+          aws-region: ${{ inputs.aws-region }}
+
+      - name: Deploy on ECS
+        run: >
+          aws ecs update-service 
+          --cluster ${{ inputs.ecs-cluster }}
+          --service ${{ inputs.ecs-service }}
+          --task-definition ${{ inputs.ecs-task-definition }}
+          --force-new-deployment
