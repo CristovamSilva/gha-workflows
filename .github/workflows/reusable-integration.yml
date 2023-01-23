@@ -7,25 +7,17 @@ on:
         description: Directory containing requirements files.
         required: false
         default: src
-        type: directory
-        validation:
-          rule: directoryExists
-
+        type: string
       source-directory:
         description: Directory containing the source code.
         required: false
         default: src
-        type: directory
-        validation:
-          rule: directoryExists
-
+        type: string
       package-directory:
         description: Directory containing a specific package source code.
         required: false
         default: "."
-        type: directory
-        validation:
-          rule: directoryExists
+        type: string
 
       enable-security:
         description: Whether to run security checks.
